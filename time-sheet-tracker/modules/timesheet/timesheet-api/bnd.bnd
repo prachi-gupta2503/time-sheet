@@ -1,0 +1,10 @@
+Bundle-Name: timesheet-api
+Bundle-SymbolicName: com.adjecti.timesheet.api
+Bundle-Version: 1.0.0
+Export-Package:\
+	com.adjecti.timesheet.exception,\
+	com.adjecti.timesheet.model,\
+	com.adjecti.timesheet.service,\
+	com.adjecti.timesheet.service.persistence
+-check: EXPORTS
+-includeresource: META-INF/service.xml=../timesheet-service/service.xml

@@ -1,0 +1,4 @@
+Bundle-Name: timesheet-web
+Bundle-SymbolicName: com.adjecti.timesheet
+Bundle-Version: 1.0.0
+Export-Package: com.adjecti.timesheet.constants
