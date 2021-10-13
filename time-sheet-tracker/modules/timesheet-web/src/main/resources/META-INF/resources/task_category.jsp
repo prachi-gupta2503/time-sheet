@@ -9,6 +9,11 @@
 
 <portlet:actionURL name="addTaskCategory" var="addTaskCategoryURL"></portlet:actionURL>
 
+ <div class="row">
+<div class="col-4">
+<%@ include file="/timesheet_sidebar.jsp" %>
+</div>
+<div class="col-8">
  
 
 <aui:form action="${addTaskCategoryURL}" name="<portlet:namespace />fm">
@@ -29,3 +34,5 @@
 
     </aui:button-row>
         </aui:form>
+        </div>
+        </div>

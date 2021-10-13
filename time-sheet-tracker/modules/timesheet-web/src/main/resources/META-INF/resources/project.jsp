@@ -4,6 +4,7 @@
 <portlet:renderURL var="viewURL">
 
 
+
 <portlet:param name="mvcPath" value="/view.jsp"></portlet:param>
 
 </portlet:renderURL>
@@ -11,6 +12,11 @@
 <portlet:actionURL name="addProject" var="addProjectURL"></portlet:actionURL>
 
  
+<div class="row">
+<div class="col-4">
+<%@ include file="/timesheet_sidebar.jsp" %>
+</div>
+<div class="col-8">
 
 <aui:form action="${addProjectURL}" name="<portlet:namespace />fm">
 
@@ -36,3 +42,5 @@
 
     </aui:button-row>
 </aui:form>
+</div>
+</div>
