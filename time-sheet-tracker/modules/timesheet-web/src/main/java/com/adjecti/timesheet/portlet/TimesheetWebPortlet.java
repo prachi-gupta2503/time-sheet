@@ -5,10 +5,8 @@ import com.adjecti.timesheet.model.Project;
 import com.adjecti.timesheet.model.ResourceCategory;
 import com.adjecti.timesheet.model.TaskCategory;
 import com.adjecti.timesheet.service.ProjectLocalService;
-import com.adjecti.timesheet.service.ProjectLocalServiceUtil;
-import com.adjecti.timesheet.service.ResourceCategoryLocalServiceUtil;
+import com.adjecti.timesheet.service.ResourceCategoryLocalService;
 import com.adjecti.timesheet.service.TaskCategoryLocalService;
-import com.adjecti.timesheet.service.TaskCategoryLocalServiceUtil;
 import com.adjecti.timesheet.service.TaskLocalService;
 import com.liferay.counter.kernel.service.CounterLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -49,25 +47,27 @@ public class TimesheetWebPortlet extends MVCPortlet {
 	private ProjectLocalService _projectLocalService;
 	@Reference
 	private TaskCategoryLocalService _taskCategoryLocalService;
-
+    @Reference
+    private ResourceCategoryLocalService _resourceCategoryLocalService;
 	
 
 	public void addProject(ActionRequest request, ActionResponse response) throws PortalException {
 
 		String name = ParamUtil.getString(request, "name");
 		
-
+        System.out.println("name "+name);
 		ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
 
-		Project project = ProjectLocalServiceUtil
-				.createProject(CounterLocalServiceUtil.increment(Project.class.getName()));
-
+		Project project = _projectLocalService.createProject(CounterLocalServiceUtil.increment(Project.class.getName()));
+		System.out.println("project "+project);
 		project.setGroupId(themeDisplay.getLayout().getGroupId());
-
+        project.setUserName(themeDisplay.getLayout().getUserName());
+        project.setCreateDate(themeDisplay.getLayout().getCreateDate());
+        project.setModifiedDate(themeDisplay.getLayout().getModifiedDate());
 		project.setName(name);
 		
 
-		ProjectLocalServiceUtil.updateProject(project);
+		_projectLocalService.updateProject(project);
 
 	}
 
@@ -80,15 +80,17 @@ public class TimesheetWebPortlet extends MVCPortlet {
 		  ThemeDisplay themeDisplay = (ThemeDisplay)
 		  request.getAttribute(WebKeys.THEME_DISPLAY);
 		  
-		  TaskCategory taskcategory = TaskCategoryLocalServiceUtil
+		  TaskCategory taskcategory = _taskCategoryLocalService
 		  .createTaskCategory(CounterLocalServiceUtil.increment(TaskCategory.class.
 		  getName()));
 		  
 		  taskcategory.setGroupId(themeDisplay.getLayout().getGroupId());
-		  
+		  taskcategory.setUserName(themeDisplay.getLayout().getUserName());
+		  taskcategory.setCreateDate(themeDisplay.getLayout().getCreateDate());
+		  taskcategory.setModifiedDate(themeDisplay.getLayout().getModifiedDate());
 		  taskcategory.setType(category);;
 		  
-		  TaskCategoryLocalServiceUtil.updateTaskCategory(taskcategory);
+		  _taskCategoryLocalService.updateTaskCategory(taskcategory);
 		 
 	}
 	public void addResourceCategory(ActionRequest request, ActionResponse response) throws PortalException {
@@ -100,15 +102,17 @@ public class TimesheetWebPortlet extends MVCPortlet {
 		  ThemeDisplay themeDisplay = (ThemeDisplay)
 		  request.getAttribute(WebKeys.THEME_DISPLAY);
 		  
-		  ResourceCategory resourcecategory= ResourceCategoryLocalServiceUtil
+		  ResourceCategory resourcecategory= _resourceCategoryLocalService
 		  .createResourceCategory(CounterLocalServiceUtil.increment(ResourceCategory.class.
 		  getName()));
 		  
 		  resourcecategory.setGroupId(themeDisplay.getLayout().getGroupId());
-		  
+		  resourcecategory.setUserName(themeDisplay.getLayout().getUserName());
+		  resourcecategory.setCreateDate(themeDisplay.getLayout().getCreateDate());
+		  resourcecategory.setModifiedDate(themeDisplay.getLayout().getModifiedDate());
 		  resourcecategory.setType(type);;
 		  
-		  ResourceCategoryLocalServiceUtil.updateResourceCategory(resourcecategory);
+		  _resourceCategoryLocalService.updateResourceCategory(resourcecategory);
 		 
 	}
 }
