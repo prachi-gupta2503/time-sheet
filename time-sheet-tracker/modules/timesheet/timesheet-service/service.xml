@@ -225,7 +225,9 @@
 		<finder name="TaskId" return-type="Collection">
 			<finder-column name="taskId" />
 		</finder>
-
+        <finder name="ProjectId" return-type="Collection">
+			<finder-column name="projectId" />
+		</finder>
 		<!-- References -->
 
 		<reference entity="AssetEntry" package-path="com.liferay.portlet.asset" />

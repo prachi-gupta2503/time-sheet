@@ -1,9 +1,9 @@
 package com.adjecti.timesheet.portlet;
 
 import com.adjecti.timesheet.constants.TimesheetWebPortletKeys;
-import com.adjecti.timesheet.model.Employee;
 import com.adjecti.timesheet.model.Project;
 import com.adjecti.timesheet.model.ResourceCategory;
+import com.adjecti.timesheet.model.Task;
 import com.adjecti.timesheet.model.TaskCategory;
 import com.adjecti.timesheet.service.EmployeeLocalService;
 import com.adjecti.timesheet.service.ProjectLocalService;
@@ -11,6 +11,7 @@ import com.adjecti.timesheet.service.ResourceCategoryLocalService;
 import com.adjecti.timesheet.service.TaskCategoryLocalService;
 import com.adjecti.timesheet.service.TaskLocalService;
 import com.liferay.counter.kernel.service.CounterLocalServiceUtil;
+
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCPortlet;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
@@ -136,6 +137,35 @@ public class TimesheetWebPortlet extends MVCPortlet {
 
 		 
 	}
+public void addTask(ActionRequest request, ActionResponse response) throws PortalException {
+		
+		String taskname = ParamUtil.getString(request, "taskName");
+		long projectId = ParamUtil.getLong(request, "projectId");
+		long taskCategoryId = ParamUtil.getLong(request, "taskCategoryId");
+		
+		
+		
+		  ThemeDisplay themeDisplay = (ThemeDisplay)
+		  request.getAttribute(WebKeys.THEME_DISPLAY);
+		  
+		  Task task= _taskLocalService
+		  .createTask(CounterLocalServiceUtil.increment(Task.class.
+		  getName()));
+		  task.setUserId(themeDisplay.getLayout().getUserId());
+		  task.setGroupId(themeDisplay.getLayout().getGroupId());
+		  task.setUserName(themeDisplay.getLayout().getUserName());
+		  task.setCreateDate(themeDisplay.getLayout().getCreateDate());
+		  task.setModifiedDate(themeDisplay.getLayout().getModifiedDate());
+		  task.setTaskName(taskname);
+		  task.setProjectId(projectId);
+		  task.setTaskCategoryId(taskCategoryId);
+		  
+		  _taskLocalService.updateTask(task);
+		   response.setRenderParameter(
+		            "mvcPath", "view.jsp");
+
+		 
+	}
 	@Override
 	public void render(RenderRequest request, RenderResponse response)
 	    throws IOException, PortletException {
@@ -144,7 +174,7 @@ public class TimesheetWebPortlet extends MVCPortlet {
 	    request.setAttribute("_projectLocalService", getProjectLocalService());
 	    request.setAttribute("_taskCategoryLocalService", getTaskCategoryLocalService());
 	    request.setAttribute("_resourceCategoryLocalService", getResourceCategoryLocalService());
-	    
+	    request.setAttribute("_taskLocalService", getTaskLocalService());
 	 
 	    super.render(request, response);
 	    
@@ -158,5 +188,8 @@ public class TimesheetWebPortlet extends MVCPortlet {
 	}
 	public ResourceCategoryLocalService getResourceCategoryLocalService() {
 	    return _resourceCategoryLocalService;
+	}
+	public TaskLocalService getTaskLocalService() {
+	    return _taskLocalService;
 	}
 }
