@@ -13,7 +13,7 @@
     <title>Hello, world!</title>
     <style>
        .side-navbar{
-          background:black;
+          background:blue;
          
        }
        a{
@@ -41,7 +41,7 @@
 <liferay-portlet:renderURL var="taskCategoryUrl">
         <portlet:param name="mvcPath" value="/task_category_list.jsp" />
 </liferay-portlet:renderURL>
-<liferay-portlet:renderURL var="taskUrl">
+<liferay-portlet:renderURL var="tasksUrl">
         <portlet:param name="mvcPath" value="/task.jsp" />
 </liferay-portlet:renderURL>
 <div class="side-navbar active-nav d-flex justify-content-between flex-wrap flex-column" id="sidebar">
@@ -50,16 +50,16 @@
      Time Tracker
     </a>
     <li href="#" class="nav-link">
-      <a href="${resourceCategoryUrl}" >ResourceCategory</a>
+      <a href="${resourceCategoryUrl}" >Resource Category</a>
     </li>
     <li href="#" class="nav-link">
      <a href="${projectUrl}" > Project</a>
     </li>
     <li href="#" class="nav-link">
-      <a href="${taskCategoryUrl}" >TaskCategory</a>
+      <a href="${taskCategoryUrl}" >Task Category</a>
     </li>
-    <li href="#" class="nav-link">
-      <a href="${taskUrl}" >Task</a>
+   <li href="#" class="nav-link">
+      <a href="${tasksUrl}" >Task</a>
     </li>
   </ul>
 </div>

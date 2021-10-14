@@ -1,7 +1,8 @@
+<%@ taglib uri = "http://java.sun.com/jsp/jstl/core" prefix = "c" %>
 <%@page import="com.adjecti.timesheet.service.*"%>
 <%@page import="com.adjecti.timesheet.model.*" %>
 <%@page import="java.util.*" %>
-<%@page import=" com.liferay.portal.kernel.dao.orm.DynamicQuery" %>
+
 <%@ include file="/init.jsp" %>
 <portlet:renderURL var="viewURL">
 
@@ -14,7 +15,7 @@
 <div class="col-4">
 <%@ include file="/timesheet_sidebar.jsp" %>
 </div>
-<div class="col-8">
+<div class="col-6">
 
  
 
@@ -37,46 +38,22 @@
     <aui:option value="<%=project.getProjectId() %>"><%=project.getName() %></aui:option>                       
         <%} %>
         </aui:select>
-        <table class="table table-striped">
-  <thead>
-    <tr>
-     
-      <th scope="col">Name</th>
-      
-    </tr>
-  </thead>
-  <tbody>
-  <%--  <%  TaskLocalService tasklocalservice=(TaskLocalService)request.getAttribute("_taskLocalService"); %>
-    <%DynamicQuery query=tasklocalservice.dynamicQuery(); 
-    query.add(PropertyFactoryUtil.forName("projectId").eq());
-    for(Task task:tasks){
         
-    %> --%>
-      <tr>
-      
-      <td></td>
-      
-    </tr>
-  
-  </tbody>
-</table>
+ 
        </aui:col>
-         <aui:col width="30">
-        <aui:input name="taskName" />
+         <aui:col width="30" id="taskname">
+        <aui:input name="taskName"  />
         </aui:col>
          <aui:col width="30">
-    <aui:select label=" TaskCategory" id="taskcategory" name="taskcategoryId">
+    <aui:select label=" TaskCategory" id="taskcategory" name="taskCategoryId">
      <aui:option value="" selected="true" disabled= "true">Please Select an TaskCategory</aui:option>
-     <%
-   
-    TaskCategoryLocalService taskcategoryLocalService=(TaskCategoryLocalService)request.getAttribute("_taskCategoryLocalService"); %>
+     <% TaskCategoryLocalService taskcategoryLocalService=(TaskCategoryLocalService)request.getAttribute("_taskCategoryLocalService"); %>
     <%List<TaskCategory>taskCategory=taskcategoryLocalService.getTaskCategories(0, taskcategoryLocalService.getTaskCategoriesCount()); 
-    for(TaskCategory taskcategory:taskCategory){
-        
+    for(TaskCategory taskcategory:taskCategory){ 
     %>
    
     <aui:option value="<%=taskcategory.getTaskCategoryId() %>"><%=taskcategory.getType() %></aui:option>                       
-        <%} %>
+       <%} %>
         </aui:select>
        </aui:col>
         
@@ -94,4 +71,92 @@
     </aui:button-row>
 </aui:form>
 </div>
+
+<div class="col-2">
+<div class="float-right">
+        <aui:button value="Add Task" class="btn btn-primary" id="addtask"></aui:button>
+        </div>
+        <div class="row">
+        <table class="table table-striped" id="table1">
+  <thead>
+    <tr>
+     
+      <th scope="col">Task</th>
+       
+      
+    </tr>
+  </thead>
+  <tbody>
+  
+  </tbody>
+</table>
+<table class="table table-striped" id="table2">
+  <thead>
+    <tr>
+     
+      
+       <th scope="col">Type</th>
+      
+    </tr>
+  </thead>
+  <tbody>
+  
+  </tbody>
+</table>
 </div>
+</div>
+</div>
+<script>
+
+$("#<portlet:namespace/>taskname").hide();
+$("#<portlet:namespace/>project").change(function(){
+	 
+	var projectId=$(this).val();
+	var tab="";
+	//var row=$("#table1 > tbody");
+	var taskname="";
+	var taskCategory="";
+	
+	var row=$("#table1 >tbody")
+	var row1=$("#table2 >tbody")
+	row.empty();
+	row1.empty();
+	Liferay.Service(
+			  '/timesheet.task/find-by-project-id',
+			  {
+			    projectId: projectId
+			  },
+			  function(obj) {
+			       for(var i=0;i<obj.length;i++){
+			    row.append("<tr><td>"+obj[i].taskName+"</td><td>")
+			  
+			    Liferay.Service(
+			    		  '/timesheet.taskcategory/find-by-task-category-id',
+			    		  {
+			    		    taskCategoryId: obj[i].taskCategoryId
+			    		  },
+			    		  function(taskcategory) {
+			    			  taskCategory= taskcategory[0].type;
+			    			  row1.append("<tr><td>"+taskCategory+"</td></tr>");
+			    			
+			    		  }
+			    		);
+			   
+			    
+			      
+			    }
+		  }
+			);
+	
+/* 	console.log(tab) */
+	
+	/* $("table > tbody").append(tab); */
+	 
+});
+
+$("#<portlet:namespace />addtask").click(function(){
+	
+	$("#<portlet:namespace/>taskname").show();
+})
+
+</script>
