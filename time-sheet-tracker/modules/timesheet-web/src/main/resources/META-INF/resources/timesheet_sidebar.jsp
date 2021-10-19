@@ -13,15 +13,26 @@
     <title>Hello, world!</title>
     <style>
        .side-navbar{
-          background:blue;
+         background-color: #e3f2fd;;
          
        }
+       
+       
        a{
            text-decoration:none;
-            color:white;
+            color:black;
           font-size:16px;
           font-weight:20px;
        }
+       h5 {
+  text-decoration: underline;
+  margin-left:30px;
+}
+
+#time
+{
+  
+}
     </style>
   </head>
   <body>
@@ -44,23 +55,32 @@
 <liferay-portlet:renderURL var="tasksUrl">
         <portlet:param name="mvcPath" value="/task.jsp" />
 </liferay-portlet:renderURL>
+<liferay-portlet:renderURL var="projectResourceUrl">
+        <portlet:param name="mvcPath" value="/project_resource_list.jsp" />
+</liferay-portlet:renderURL>
+
 <div class="side-navbar active-nav d-flex justify-content-between flex-wrap flex-column" id="sidebar">
   <ul class="nav flex-column text-white w-100">
-    <a href="#" class="nav-link h3 text-white my-2">
+    
+   <a href="#" class="nav-link h3 text-info my-2" >
+    <liferay-ui:icon image="time" id="time" />
      Time Tracker
     </a>
     <li href="#" class="nav-link">
-      <a href="${resourceCategoryUrl}" >Resource Category</a>
+    
+      <a href="${resourceCategoryUrl}" ><liferay-ui:icon image="assign_user_roles" id="time" />Resource Category</a>
     </li>
     <li href="#" class="nav-link">
-     <a href="${projectUrl}" > Project</a>
+    
+     <a href="${projectUrl}" ><liferay-ui:icon image="pages" id="time" /> Project</a>
     </li>
     <li href="#" class="nav-link">
-      <a href="${taskCategoryUrl}" >Task Category</a>
+   
+      <a href="${taskCategoryUrl}" > <liferay-ui:icon image="team_icon" id="time" />Task Category</a>
+      
     </li>
-   <li href="#" class="nav-link">
-      <a href="${tasksUrl}" >Task</a>
-    </li>
+   
+   
   </ul>
 </div>
     

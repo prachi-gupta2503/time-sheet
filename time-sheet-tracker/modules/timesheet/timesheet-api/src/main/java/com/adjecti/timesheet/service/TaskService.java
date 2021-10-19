@@ -14,6 +14,8 @@
 
 package com.adjecti.timesheet.service;
 
+import com.adjecti.timesheet.model.Task;
+
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.jsonwebservice.JSONWebService;
@@ -21,6 +23,8 @@ import com.liferay.portal.kernel.security.access.control.AccessControlled;
 import com.liferay.portal.kernel.service.BaseService;
 import com.liferay.portal.kernel.transaction.Isolation;
 import com.liferay.portal.kernel.transaction.Transactional;
+
+import java.util.List;
 
 import org.osgi.annotation.versioning.ProviderType;
 
@@ -47,6 +51,9 @@ public interface TaskService extends BaseService {
 	 *
 	 * Never modify this interface directly. Add custom service methods to <code>com.adjecti.timesheet.service.impl.TaskServiceImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface. Consume the task remote service via injection or a <code>org.osgi.util.tracker.ServiceTracker</code>. Use {@link TaskServiceUtil} if injection and service tracking are not available.
 	 */
+	public List<Object> find(long projectId);
+
+	public List<Task> findByProjectId(long projectId);
 
 	/**
 	 * Returns the OSGi service identifier.

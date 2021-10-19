@@ -207,6 +207,8 @@ public interface TaskCategoryLocalService
 	public TaskCategory fetchTaskCategoryByUuidAndGroupId(
 		String uuid, long groupId);
 
+	public List<TaskCategory> findByTaskCategoryId(long taskCategoryId);
+
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public ActionableDynamicQuery getActionableDynamicQuery();
 

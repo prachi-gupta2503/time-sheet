@@ -14,7 +14,7 @@
 <div class="col-8">
 
 
-<a href="${resourcecategoryUrl}" ><button type="button" class="btn btn-success">Add ResourceCategory</button></a>
+<a href="${resourcecategoryUrl}" > <button type="button" class="btn btn-success"><liferay-ui:icon image="add" id="time" /> ResourceCategory</button></a>
 
 <table class="table table-striped">
   <thead>

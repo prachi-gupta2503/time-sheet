@@ -205,6 +205,10 @@ public interface TaskLocalService
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public Task fetchTaskByUuidAndGroupId(String uuid, long groupId);
 
+	public List<Object> find(Long projectId);
+
+	public List<Task> findByProjectId(long projectId);
+
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public ActionableDynamicQuery getActionableDynamicQuery();
 

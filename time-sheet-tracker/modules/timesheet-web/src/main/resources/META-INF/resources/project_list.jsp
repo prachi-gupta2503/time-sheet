@@ -6,6 +6,8 @@
 <liferay-portlet:renderURL var="projecturl">
         <portlet:param name="mvcPath" value="/project.jsp" />
 </liferay-portlet:renderURL>
+
+
 <div class="row">
 <div class="col-4">
 <%@ include file="/timesheet_sidebar.jsp" %>
@@ -13,7 +15,7 @@
 <div class="col-8">
 
 
-<a href="${projecturl}" ><button type="button" class="btn btn-success">Add Project</button></a>
+<a href="${projecturl}" ><button type="button" class="btn btn-success"><liferay-ui:icon image="add" /> Project</button></a>
 
 <table class="table table-striped">
   <thead>
@@ -37,10 +39,22 @@
       <tr>
       <td><%=i++ %></td>
       <td><%=project.getName() %></td>
+      <%String id=String.valueOf(project.getProjectId()); %>
+      <liferay-portlet:renderURL var="taskurl">
+        <portlet:param name="mvcPath" value="/task.jsp" />
+        <portlet:param name="projectid" value="<%=id %>" />
+</liferay-portlet:renderURL>
+<liferay-portlet:renderURL var="resourceurl">
+        <portlet:param name="mvcPath" value="/project_resource.jsp" />
+       <portlet:param name="projectid" value="<%=id %>" />
+</liferay-portlet:renderURL>
+      <td><a href="${taskurl }"style="color:green">Task</a></td>
+      <td><a href="${resourceurl }"style="color:green">Resource</a></td>
       <%} %>
     </tr>
    
   </tbody>
 </table>
+
 </div>
 </div>

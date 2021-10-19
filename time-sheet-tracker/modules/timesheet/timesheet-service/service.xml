@@ -258,6 +258,7 @@
 		<column name="startDate" type="Date" />
 		
 		<column name="projectId" type="long" />
+		
 		<column name="employeeId" type="long" />
 	
 
@@ -271,6 +272,9 @@
 
 		<finder name="ProjectResourceId" return-type="Collection">
 			<finder-column name="projectResourceId" />
+		</finder>
+		<finder name="ProjectId" return-type="Collection">
+			<finder-column name="projectId" />
 		</finder>
 
 		<!-- References -->

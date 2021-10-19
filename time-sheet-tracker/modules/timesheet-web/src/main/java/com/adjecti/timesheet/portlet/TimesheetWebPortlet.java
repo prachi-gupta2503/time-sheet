@@ -2,16 +2,17 @@ package com.adjecti.timesheet.portlet;
 
 import com.adjecti.timesheet.constants.TimesheetWebPortletKeys;
 import com.adjecti.timesheet.model.Project;
+import com.adjecti.timesheet.model.ProjectResource;
 import com.adjecti.timesheet.model.ResourceCategory;
 import com.adjecti.timesheet.model.Task;
 import com.adjecti.timesheet.model.TaskCategory;
 import com.adjecti.timesheet.service.EmployeeLocalService;
 import com.adjecti.timesheet.service.ProjectLocalService;
+import com.adjecti.timesheet.service.ProjectResourceLocalService;
 import com.adjecti.timesheet.service.ResourceCategoryLocalService;
 import com.adjecti.timesheet.service.TaskCategoryLocalService;
 import com.adjecti.timesheet.service.TaskLocalService;
 import com.liferay.counter.kernel.service.CounterLocalServiceUtil;
-
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCPortlet;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
@@ -59,7 +60,10 @@ public class TimesheetWebPortlet extends MVCPortlet {
     private ResourceCategoryLocalService _resourceCategoryLocalService;
     
     @Reference
-    private EmployeeLocalService employeeLocalService;
+    private EmployeeLocalService _employeeLocalService;
+    
+    @Reference
+    private ProjectResourceLocalService _projectResourceLocalService;
 	
 
 	public void addProject(ActionRequest request, ActionResponse response) throws PortalException, IOException {
@@ -81,6 +85,33 @@ public class TimesheetWebPortlet extends MVCPortlet {
 		
 
 		_projectLocalService.updateProject(project);
+
+        response.setRenderParameter(
+            "mvcPath", "/project_list.jsp");
+
+	}
+	public void addProjectResource(ActionRequest request, ActionResponse response) throws PortalException, IOException {
+
+		long projectId = ParamUtil.getLong(request, "projectId");
+		long taskId = ParamUtil.getLong(request, "taskId");
+		long employeeId = ParamUtil.getLong(request, "employeeId");
+		
+        
+		ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
+
+		ProjectResource projectResource = _projectResourceLocalService.createProjectResource(CounterLocalServiceUtil.increment(ProjectResource.class.getName()));
+		
+		projectResource.setUserId(themeDisplay.getLayout().getUserId());
+		projectResource.setGroupId(themeDisplay.getLayout().getGroupId());
+		projectResource.setUserName(themeDisplay.getLayout().getUserName());
+		projectResource.setCreateDate(themeDisplay.getLayout().getCreateDate());
+		projectResource.setModifiedDate(themeDisplay.getLayout().getModifiedDate());
+		
+		projectResource.setProjectId(projectId);
+		projectResource.setEmployeeId(employeeId);
+		
+
+		_projectResourceLocalService.updateProjectResource(projectResource);
 
         response.setRenderParameter(
             "mvcPath", "/project_list.jsp");
@@ -161,8 +192,9 @@ public void addTask(ActionRequest request, ActionResponse response) throws Porta
 		  task.setTaskCategoryId(taskCategoryId);
 		  
 		  _taskLocalService.updateTask(task);
-		   response.setRenderParameter(
-		            "mvcPath", "view.jsp");
+		  response.setRenderParameter(
+		            "mvcPath", "/project_list.jsp");
+            
 
 		 
 	}
@@ -175,7 +207,8 @@ public void addTask(ActionRequest request, ActionResponse response) throws Porta
 	    request.setAttribute("_taskCategoryLocalService", getTaskCategoryLocalService());
 	    request.setAttribute("_resourceCategoryLocalService", getResourceCategoryLocalService());
 	    request.setAttribute("_taskLocalService", getTaskLocalService());
-	 
+	    request.setAttribute("_employeeLocalService", getEmployeeLocalService());
+	    request.setAttribute("_projectResourceLocalService",getProjectResourceLocalService());
 	    super.render(request, response);
 	    
 	}
@@ -191,5 +224,11 @@ public void addTask(ActionRequest request, ActionResponse response) throws Porta
 	}
 	public TaskLocalService getTaskLocalService() {
 	    return _taskLocalService;
+	}
+	public EmployeeLocalService getEmployeeLocalService() {
+	    return _employeeLocalService;
+	}
+	public ProjectResourceLocalService getProjectResourceLocalService() {
+		return _projectResourceLocalService;
 	}
 }

@@ -14,7 +14,7 @@
 
 
 
-<a href="${taskcategoryUrl}" ><button type="button" class="btn btn-success">Add TaskCategory</button></a>
+<a href="${taskcategoryUrl}" ><button type="button" class="btn btn-success"><liferay-ui:icon image="add" /> TaskCategory</button></a>
 
 <table class="table table-striped">
   <thead>
