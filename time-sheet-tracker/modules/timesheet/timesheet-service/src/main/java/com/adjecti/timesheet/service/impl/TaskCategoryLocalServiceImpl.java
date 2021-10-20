@@ -14,9 +14,11 @@
 
 package com.adjecti.timesheet.service.impl;
 
+import com.adjecti.timesheet.model.TaskCategory;
 import com.adjecti.timesheet.service.base.TaskCategoryLocalServiceBaseImpl;
-
 import com.liferay.portal.aop.AopService;
+
+import java.util.List;
 
 import org.osgi.service.component.annotations.Component;
 
@@ -45,4 +47,8 @@ public class TaskCategoryLocalServiceImpl
 	 *
 	 * Never reference this class directly. Use <code>com.adjecti.timesheet.service.TaskCategoryLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.adjecti.timesheet.service.TaskCategoryLocalServiceUtil</code>.
 	 */
+	
+public List<TaskCategory> findByTaskCategoryId(long taskCategoryId){
+		return taskCategoryPersistence.findByTaskCategoryId(taskCategoryId);
+	}
 }

@@ -14,9 +14,17 @@
 
 package com.adjecti.timesheet.service.impl;
 
+import com.adjecti.timesheet.model.Task;
+import com.adjecti.timesheet.model.TaskCategory;
+import com.adjecti.timesheet.model.TaskCategoryDTO;
 import com.adjecti.timesheet.service.base.TaskLocalServiceBaseImpl;
-
 import com.liferay.portal.aop.AopService;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 
 import org.osgi.service.component.annotations.Component;
 
@@ -39,9 +47,46 @@ import org.osgi.service.component.annotations.Component;
 )
 public class TaskLocalServiceImpl extends TaskLocalServiceBaseImpl {
 
+	
+	 public List<Task> findByProjectId(long projectId) {
+		 return taskPersistence.findByProjectId(projectId);
+	 }
+	
+	 
+	
 	/*
-	 * NOTE FOR DEVELOPERS:
-	 *
-	 * Never reference this class directly. Use <code>com.adjecti.timesheet.service.TaskLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.adjecti.timesheet.service.TaskLocalServiceUtil</code>.
+	 * public List<TaskCategoryDTO> findTaskAndCategory(long projectId){
+	 * List<TaskCategoryDTO> list1=new LinkedList<TaskCategoryDTO>();
+	 * 
+	 * List<Task> findByProjectId = taskPersistence.findByProjectId(projectId);
+	 * for(Task task: findByProjectId) { TaskCategoryDTO taskCategoryDTO=new
+	 * TaskCategoryDTO();
+	 * 
+	 * List<TaskCategory> taskCategory=
+	 * taskCategoryPersistence.findByTaskCategoryId(task.getTaskCategoryId());
+	 * taskCategoryDTO.setTaskName(task.getTaskName()); for(TaskCategory
+	 * t:taskCategory) taskCategoryDTO.setTaskCategoryName(t.getType());
+	 * 
+	 * list1.add(taskCategoryDTO); }
+	 * 
+	 * return list1; }
 	 */
+	 public List<Object> find(Long projectId){
+		List<Object>object=new ArrayList<>();
+			List<Task>tasklist=taskPersistence.findByProjectId(projectId);
+			object.add(0, tasklist);
+			
+			List<TaskCategory>taskcategorylist = new ArrayList<>();
+			
+			for(Task task:tasklist) {
+				System.out.println(task.getTaskName());
+				taskcategorylist.add( taskCategoryPersistence.findByTaskCategoryId(task.getTaskCategoryId()).get(0));
+			}
+			object.add(1, taskcategorylist);
+			System.out.println(object);
+		
+				return object;
+			}
+	
+	
 }

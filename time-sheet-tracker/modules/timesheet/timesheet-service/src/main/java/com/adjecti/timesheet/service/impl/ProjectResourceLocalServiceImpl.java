@@ -14,9 +14,11 @@
 
 package com.adjecti.timesheet.service.impl;
 
+import com.adjecti.timesheet.model.ProjectResource;
 import com.adjecti.timesheet.service.base.ProjectResourceLocalServiceBaseImpl;
-
 import com.liferay.portal.aop.AopService;
+
+import java.util.List;
 
 import org.osgi.service.component.annotations.Component;
 
@@ -39,10 +41,10 @@ import org.osgi.service.component.annotations.Component;
 )
 public class ProjectResourceLocalServiceImpl
 	extends ProjectResourceLocalServiceBaseImpl {
+	
+	
+public List<ProjectResource> findByProjectId(long projectId){
+  return	projectResourcePersistence.findByProjectId(projectId);
+}
 
-	/*
-	 * NOTE FOR DEVELOPERS:
-	 *
-	 * Never reference this class directly. Use <code>com.adjecti.timesheet.service.ProjectResourceLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.adjecti.timesheet.service.ProjectResourceLocalServiceUtil</code>.
-	 */
 }

@@ -14,9 +14,12 @@
 
 package com.adjecti.timesheet.service.impl;
 
+import com.adjecti.timesheet.model.TaskCategory;
 import com.adjecti.timesheet.service.base.TaskCategoryServiceBaseImpl;
 
 import com.liferay.portal.aop.AopService;
+
+import java.util.List;
 
 import org.osgi.service.component.annotations.Component;
 
@@ -47,4 +50,9 @@ public class TaskCategoryServiceImpl extends TaskCategoryServiceBaseImpl {
 	 *
 	 * Never reference this class directly. Always use <code>com.adjecti.timesheet.service.TaskCategoryServiceUtil</code> to access the task category remote service.
 	 */
+	public List<TaskCategory> findByTaskCategoryId(long taskCategoryId){
+		return taskCategoryLocalService.findByTaskCategoryId(taskCategoryId);
+	}
+	
+	
 }

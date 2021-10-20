@@ -14,11 +14,19 @@
 
 package com.adjecti.timesheet.service.impl;
 
+import com.adjecti.timesheet.model.Task;
+import com.adjecti.timesheet.model.TaskCategory;
+import com.adjecti.timesheet.model.TaskCategoryDTO;
+import com.adjecti.timesheet.service.TaskCategoryLocalService;
 import com.adjecti.timesheet.service.base.TaskServiceBaseImpl;
-
 import com.liferay.portal.aop.AopService;
 
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
 
 /**
  * The implementation of the task remote service.
@@ -42,9 +50,32 @@ import org.osgi.service.component.annotations.Component;
 )
 public class TaskServiceImpl extends TaskServiceBaseImpl {
 
+	@Reference
+	TaskCategoryLocalService taskCategoryLocalService;
+	
+	 public List<Task> findByProjectId(long projectId) {
+		 return taskLocalService.findByProjectId(projectId);
+	 }
+	public List<Object> find(long projectId){
+		return taskLocalService.find(projectId);
+	}
+	 
 	/*
-	 * NOTE FOR DEVELOPERS:
-	 *
-	 * Never reference this class directly. Always use <code>com.adjecti.timesheet.service.TaskServiceUtil</code> to access the task remote service.
+	 * public List<TaskCategoryDTO> findTaskAndCategory(long projectId){
+	 * List<TaskCategoryDTO> list1=new LinkedList<TaskCategoryDTO>();
+	 * 
+	 * List<Task> findByProjectId = taskLocalService.findByProjectId(projectId);
+	 * for(Task task: findByProjectId) { TaskCategoryDTO taskCategoryDTO=new
+	 * TaskCategoryDTO();
+	 * 
+	 * List<TaskCategory> taskCategory=
+	 * taskCategoryLocalService.findByTaskCategoryId(task.getTaskCategoryId());
+	 * taskCategoryDTO.setTaskName(task.getTaskName()); for(TaskCategory
+	 * t:taskCategory) taskCategoryDTO.setTaskCategoryName(t.getType());
+	 * 
+	 * list1.add(taskCategoryDTO); }
+	 * 
+	 * return list1; }
 	 */
+	
 }

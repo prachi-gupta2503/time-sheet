@@ -14,9 +14,11 @@
 
 package com.adjecti.timesheet.service.impl;
 
+import com.adjecti.timesheet.model.ProjectResource;
 import com.adjecti.timesheet.service.base.ProjectResourceServiceBaseImpl;
-
 import com.liferay.portal.aop.AopService;
+
+import java.util.List;
 
 import org.osgi.service.component.annotations.Component;
 
@@ -42,9 +44,5 @@ import org.osgi.service.component.annotations.Component;
 )
 public class ProjectResourceServiceImpl extends ProjectResourceServiceBaseImpl {
 
-	/*
-	 * NOTE FOR DEVELOPERS:
-	 *
-	 * Never reference this class directly. Always use <code>com.adjecti.timesheet.service.ProjectResourceServiceUtil</code> to access the project resource remote service.
-	 */
+	
 }
