@@ -2,7 +2,7 @@
 <%@page import="com.adjecti.timesheet.service.*"%>
 <%@page import="com.adjecti.timesheet.model.*" %>
 <%@page import="java.util.*" %>
-
+<%@ include file="/resource_category.jsp"%>
 <liferay-portlet:renderURL var="resourcecategoryUrl">
         <portlet:param name="mvcPath" value="/resource_category.jsp" />
 </liferay-portlet:renderURL>
@@ -14,7 +14,7 @@
 <div class="col-8">
 
 
-<a href="${resourcecategoryUrl}" > <button type="button" class="btn btn-success"><liferay-ui:icon image="add" id="time" /> ResourceCategory</button></a>
+ <button type="button" class="btn btn-success" id="<portlet:namespace/>mappingBtn"><liferay-ui:icon image="add" id="time" /> ResourceCategory</button>
 
 <table class="table table-striped">
   <thead>

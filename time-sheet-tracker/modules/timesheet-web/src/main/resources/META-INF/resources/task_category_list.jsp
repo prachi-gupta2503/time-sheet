@@ -2,6 +2,7 @@
 <%@page import="com.adjecti.timesheet.service.*"%>
 <%@page import="com.adjecti.timesheet.model.*" %>
 <%@page import="java.util.*" %>
+<%@ include file="/task_category.jsp"%>
 
 <liferay-portlet:renderURL var="taskcategoryUrl">
         <portlet:param name="mvcPath" value="/task_category.jsp" />
@@ -14,7 +15,7 @@
 
 
 
-<a href="${taskcategoryUrl}" ><button type="button" class="btn btn-success"><liferay-ui:icon image="add" /> TaskCategory</button></a>
+<button type="button" class="btn btn-success" id="<portlet:namespace/>mappingBtn"><liferay-ui:icon image="add" /> TaskCategory</button>
 
 <table class="table table-striped">
   <thead>
@@ -45,3 +46,4 @@
 </table>
 </div>
 </div>
+

@@ -10,29 +10,26 @@
    
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 
-    <title>Hello, world!</title>
+    
     <style>
-       .side-navbar{
-         background-color: #e3f2fd;;
+     .side-navbar{
+           background-color: #e3f2fd;;
          
-       }
+         }
        
        
        a{
-           text-decoration:none;
+            text-decoration:none;
             color:black;
-          font-size:16px;
-          font-weight:20px;
-       }
-       h5 {
-  text-decoration: underline;
-  margin-left:30px;
-}
+            font-size:16px;
+            font-weight:20px;
+         }
+       h5{
+            text-decoration: underline;
+            margin-left:30px;
+          }
 
-#time
-{
-  
-}
+
     </style>
   </head>
   <body>
@@ -41,20 +38,24 @@
  
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 
-	<!-- side bar  -->
+	
 	
 	<liferay-portlet:renderURL var="resourceCategoryUrl">
         <portlet:param name="mvcPath" value="/resource_category_list.jsp" />
 </liferay-portlet:renderURL>
+
 <liferay-portlet:renderURL var="projectUrl">
         <portlet:param name="mvcPath" value="/project_list.jsp" />
 </liferay-portlet:renderURL>
+
 <liferay-portlet:renderURL var="taskCategoryUrl">
         <portlet:param name="mvcPath" value="/task_category_list.jsp" />
 </liferay-portlet:renderURL>
+
 <liferay-portlet:renderURL var="tasksUrl">
         <portlet:param name="mvcPath" value="/task.jsp" />
 </liferay-portlet:renderURL>
+
 <liferay-portlet:renderURL var="projectResourceUrl">
         <portlet:param name="mvcPath" value="/project_resource_list.jsp" />
 </liferay-portlet:renderURL>

@@ -6,7 +6,7 @@
 <%@ include file="/init.jsp" %>
 <portlet:renderURL var="viewURL">
 
-<portlet:param name="mvcPath" value="/project_list.jsp"></portlet:param>
+<portlet:param name="mvcPath" value="/task.jsp"></portlet:param>
 
 </portlet:renderURL>
 
@@ -18,14 +18,47 @@
   padding: 20px;
   text-align: center;
 }
-#form{
+.add_mapping {
+	display: none; 
+	position: fixed;
+	z-index: 1; 
+	padding-top: 100px; 
+	left: 0;
+	top: 0;
+	width: 30%; 
+	height: 40%; 
+	margin-left:800px;
+	margin-top:30px;
+	
+}
+.model-content{
+background-color: #e3f2fd;
+}
 
-  color: black;
-  padding: 40px;
-  text-align: center;
-  display:none;
- 
-  }
+#mapping-dialog{
+background-color: #e3f2fd;
+  padding-left: 30%;
+  
+}
+#span{
+background-color: #e3f2fd;
+}
+
+/* The Close Button */
+.close {
+	color: #aaaaaa;
+	float: right;
+	font-size: 28px;
+	font-weight: bold;
+}
+
+.close:hover, .close:focus {
+	color: #000;
+	text-decoration: none;
+	cursor: pointer;
+}
+
+
 </style>
 <div class="row">
 <div class="col-4">
@@ -72,11 +105,12 @@ String projectid=request.getParameter("projectid");
 </table>
  
 <div >
-        <aui:button value="Add Task" class="btn btn-primary" id="addtask"></aui:button>
+        <button type="button" class="btn btn-success" id="<portlet:namespace/>mappingBtn"><liferay-ui:icon image="add" /> AddTask</button>
+
        </div>
        
        
- <div id="form">     
+ <%-- <div id="form">     
  <div>
 <aui:form action="${addTaskURL}" name="<portlet:namespace />fm">
 
@@ -115,7 +149,7 @@ String projectid=request.getParameter("projectid");
 	
 </aui:form>
 
-<%-- <aui:model-context bean="${entry}" model="${Task.class}" />
+<aui:model-context bean="${entry}" model="${Task.class}" />
 
     <aui:fieldset >
      <aui:col width="30">
@@ -152,84 +186,95 @@ String projectid=request.getParameter("projectid");
         <aui:button type="cancel" onClick="${viewURL.toString()}"></aui:button>
 
     </aui:button-row>
-</aui:form> --%>
+</aui:form>
 </div> 
-</div>
+</div> --%>
 </div>
 
         
 </div> 
 
 
+<div id="myModal" class=" add_mapping">
+	
+	<div class="modal-content">
+		<div id="span">
+			<span class="close">&times;</span>
+		</div>
+		<div id="mapping-dialog" title="Add Mapping">
+			<aui:form action="${addTaskURL}" name="<portlet:namespace />fm">
 
-  <script>
-
- $("#<portlet:namespace />addtask").click(function(){
-	 //alert("hiii")
- 	//console.log($("#form"));
- 	$("#form").css("display","block");
- 	
+			 <aui:input type="hidden" value="<%=projectId %>" name="projectId" />
+			 <aui:input name="projectResourceId" type="hidden" />
+			 <aui:input name="taskId" type="hidden" />
+				<aui:row>
+				<aui:col width="50" id="taskname">
+					<aui:input name="taskName"  />
+					</aui:col>
+					</aui:row>
+					<aui:row>
+				
+				<aui:col width="50">
+					<aui:select label=" TaskCategory" id="taskcategory" name="taskCategoryId">
+     <aui:option value="" selected="true" disabled= "true">Please Select an TaskCategory</aui:option>
+     
+     <% TaskCategoryLocalService taskcategoryLocalService=(TaskCategoryLocalService)request.getAttribute("_taskCategoryLocalService"); %>
+    <%List<TaskCategory>taskCategory=taskcategoryLocalService.getTaskCategories(0, taskcategoryLocalService.getTaskCategoriesCount()); 
+    for(TaskCategory taskcategory:taskCategory){ 
+    %>
    
- });
-/* $("#<portlet:namespace/>taskname").hide();
-$("#<portlet:namespace/>project").change(function(){
-	 
-	var projectId=$(this).val();
-	var tab="";
-	//var row=$("#table1 > tbody");
-	var taskname="";
-	var taskCategory="";
+    <aui:option value="<%=taskcategory.getTaskCategoryId() %>"><%=taskcategory.getType() %></aui:option>                       
+       <%} %>
+        </aui:select>
+				</aui:col>
+			</aui:row>
+				
+			
+			
 	
-	var row=$("#table >tbody")
 	
-	row.empty();
+	<aui:button-row>
+
+       <button type="submit" class="btn btn-success"><liferay-ui:icon image="saved_in_database" /> Submit</button>
+        <button type="button"class="btn btn-danger" onClick="${viewURL.toString()}" id="<portlet:namespace/>cancelBtn"><liferay-ui:icon image="close" />Close</button>
+
+    </aui:button-row>
+        </aui:form>
+		</div>
+	</div>
+</div>
+
+
+<script>
+$(document).ready( function() {
+   	var modal = document.getElementById("myModal");
+	 var btn = document.getElementById("<portlet:namespace/>mappingBtn");
+	var cancelBtn = document.getElementById("<portlet:namespace/>cancelBtn");
+	var span = document.getElementsByClassName("close")[0]; 
+	btn.onclick = function() {
+		modal.style.display = "block";
+	}
+	span.onclick = function() {
+		modal.style.display = "none";
+	}
+	cancelBtn.onclick = function() {
+		modal.style.display = "none";
+	}
 	
-	Liferay.Service(
-			  '/timesheet.task/find',
-			  {
-			    projectId: projectId
-			  },
-			  function(obj) {
-				  for(var i=0;i<obj[0].length;i++){
-					 
-					 row.append("<tr><td>"+obj[0][i].taskName+"</td><td>"+obj[1][i].type+"</td></tr>")
-				  }
-					    
-			  }
-			);
-	/* Liferay.Service(
-			  '/timesheet.task/find-by-project-id',
-			  {
-			    projectId: projectId
-			  },
-			  function(obj) {
-			       for(var i=0;i<obj.length;i++){
-			    row.append("<tr><td>"+obj[i].taskName+"</td><td>")
-			  
-			    Liferay.Service(
-			    		  '/timesheet.taskcategory/find-by-task-category-id',
-			    		  {
-			    		    taskCategoryId: obj[i].taskCategoryId
-			    		  },
-			    		  function(taskcategory) {
-			    			  taskCategory= taskcategory[0].type;
-			    			  row1.append("<tr><td>"+taskCategory+"</td></tr>");
-			    			
-			    		  }
-			    		);
-			   
-			    
-			      
-			    }
-		  }
-			); */
+	window.onclick = function(event) {
+		if (event.target == modal) {
+			modal.style.display = "none";
+		}
+	}
 	
-/* 	console.log(tab) */
-	
-	/* $("table > tbody").append(tab); */
-	 
+} );
+
+</script>    
 
 
 
-</script> 
- -->
+
+
+
+
+ 
