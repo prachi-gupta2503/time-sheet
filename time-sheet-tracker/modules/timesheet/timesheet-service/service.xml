@@ -286,4 +286,104 @@
 		<reference entity="AssetEntry" package-path="com.liferay.portlet.asset" />
 		<reference entity="AssetTag" package-path="com.liferay.portlet.asset" />
 	</entity>
+	
+	
+	
+	
+	<entity local-service="true" name="ProjectResource" remote-service="true" uuid="true">
+
+		<!-- PK fields -->
+
+		<column name="projectResourceId" primary="true" type="long" />
+
+		<!-- Group instance -->
+
+		<column name="groupId" type="long" />
+
+		<!-- Audit fields -->
+
+		<column name="companyId" type="long" />
+		<column name="userId" type="long" />
+		<column name="userName" type="String" />
+		<column name="createDate" type="Date" />
+		<column name="modifiedDate" type="Date" />
+
+		<!-- Other fields -->
+
+		<column name="endDate" type="Date" />
+		<column name="startDate" type="Date" />
+		
+		<column name="projectId" type="long" />
+		
+		<column name="employeeId" type="long" />
+	
+
+		<!-- Order -->
+
+		<order by="asc">
+			<order-column name="projectResourceId" />
+		</order>
+
+		<!-- Finder methods -->
+
+		<finder name="ProjectResourceId" return-type="Collection">
+			<finder-column name="projectResourceId" />
+		</finder>
+		<finder name="ProjectId" return-type="Collection">
+			<finder-column name="projectId" />
+		</finder>
+
+		<finder name="EmployeeId" return-type="Collection">
+			<finder-column name="employeeId" />
+		</finder>
+		
+		<!-- References -->
+
+		</entity>
+	<entity local-service="true" name="resourceTask" remote-service="true" uuid="true">
+
+		<!-- PK fields -->
+
+		<column name="resourceTaskId" primary="true" type="long" />
+
+		<!-- Group instance -->
+
+		<column name="groupId" type="long" />
+
+		<!-- Audit fields -->
+
+		<column name="companyId" type="long" />
+		<column name="userId" type="long" />
+		<column name="userName" type="String" />
+		<column name="createDate" type="Date" />
+		<column name="modifiedDate" type="Date" />
+
+		<!-- Other fields -->
+
+		 <column name="employeeId" type="long" />
+	     <column name="taskId" type="long" />
+	     <column name="fromDate" type="Date" />
+	     <column name="toDate" type="Date" />
+		 <column name="hour" type="int" />
+	    
+		<!-- Order -->
+
+		<order by="asc">
+			<order-column name="resourceTaskId" />
+		</order>
+
+		<!-- Finder methods -->
+
+		
+		<finder name="EmployeeId" return-type="Collection">
+			<finder-column name="employeeId" />
+		</finder>
+		
+		
+		<!-- References -->
+
+		<reference entity="AssetEntry" package-path="com.liferay.portlet.asset" />
+		<reference entity="AssetTag" package-path="com.liferay.portlet.asset" />
+	</entity>
+	
 </service-builder>
