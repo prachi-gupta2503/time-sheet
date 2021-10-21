@@ -36,7 +36,7 @@
 
 		<!-- Finder methods -->
 
-		<finder name="ProjectId" return-type="Collection">
+		<finder name="ProjectId" return-type="Project">
 			<finder-column name="projectId" />
 		</finder>
 
@@ -175,7 +175,7 @@
 
 		<!-- Finder methods -->
 
-		<finder name="EmployeeId" return-type="Collection">
+		<finder name="EmployeeId" return-type="Employee">
 			<finder-column name="employeeId" />
 		</finder>
 
@@ -277,6 +277,10 @@
 			<finder-column name="projectId" />
 		</finder>
 
+		<finder name="EmployeeId" return-type="Collection">
+			<finder-column name="employeeId" />
+		</finder>
+		
 		<!-- References -->
 
 		<reference entity="AssetEntry" package-path="com.liferay.portlet.asset" />

@@ -16,15 +16,11 @@ package com.adjecti.timesheet.service.impl;
 
 import com.adjecti.timesheet.model.Task;
 import com.adjecti.timesheet.model.TaskCategory;
-import com.adjecti.timesheet.model.TaskCategoryDTO;
 import com.adjecti.timesheet.service.base.TaskLocalServiceBaseImpl;
 import com.liferay.portal.aop.AopService;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 
 import org.osgi.service.component.annotations.Component;
 

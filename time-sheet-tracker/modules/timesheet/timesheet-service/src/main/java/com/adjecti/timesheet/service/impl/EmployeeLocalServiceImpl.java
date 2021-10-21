@@ -14,8 +14,9 @@
 
 package com.adjecti.timesheet.service.impl;
 
+import com.adjecti.timesheet.exception.NoSuchEmployeeException;
+import com.adjecti.timesheet.model.Employee;
 import com.adjecti.timesheet.service.base.EmployeeLocalServiceBaseImpl;
-
 import com.liferay.portal.aop.AopService;
 
 import org.osgi.service.component.annotations.Component;
@@ -44,4 +45,15 @@ public class EmployeeLocalServiceImpl extends EmployeeLocalServiceBaseImpl {
 	 *
 	 * Never reference this class directly. Use <code>com.adjecti.timesheet.service.EmployeeLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.adjecti.timesheet.service.EmployeeLocalServiceUtil</code>.
 	 */
+	
+	public Employee findByEmployeeId(long employeeId) {
+		Employee employee=null;
+		try {
+			employee= employeePersistence.findByEmployeeId(employeeId);
+		} catch (NoSuchEmployeeException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return  employee;
+	}
 }

@@ -46,5 +46,8 @@ public class ProjectResourceLocalServiceImpl
 public List<ProjectResource> findByProjectId(long projectId){
   return	projectResourcePersistence.findByProjectId(projectId);
 }
+public List<ProjectResource> findByEmployeeId(long employeeId){
+	  return	projectResourcePersistence.findByEmployeeId(employeeId);
+	}
 
 }

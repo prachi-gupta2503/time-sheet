@@ -60,6 +60,10 @@
         <portlet:param name="mvcPath" value="/project_resource_list.jsp" />
 </liferay-portlet:renderURL>
 
+<liferay-portlet:renderURL var="resourceUrl">
+        <portlet:param name="mvcPath" value="/resource.jsp" />
+</liferay-portlet:renderURL>
+
 <div class="side-navbar active-nav d-flex justify-content-between flex-wrap flex-column" id="sidebar">
   <ul class="nav flex-column text-white w-100">
     
@@ -81,6 +85,11 @@
       
     </li>
    
+     <li href="#" class="nav-link">
+   
+      <a href="${resourceUrl}" > <liferay-ui:icon image="team_icon" id="time" />Resource</a>
+      
+    </li>
    
   </ul>
 </div>

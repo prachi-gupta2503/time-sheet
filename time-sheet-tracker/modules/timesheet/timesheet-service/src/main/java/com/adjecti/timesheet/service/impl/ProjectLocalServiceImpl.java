@@ -14,8 +14,9 @@
 
 package com.adjecti.timesheet.service.impl;
 
+import com.adjecti.timesheet.exception.NoSuchProjectException;
+import com.adjecti.timesheet.model.Project;
 import com.adjecti.timesheet.service.base.ProjectLocalServiceBaseImpl;
-
 import com.liferay.portal.aop.AopService;
 
 import org.osgi.service.component.annotations.Component;
@@ -44,4 +45,15 @@ public class ProjectLocalServiceImpl extends ProjectLocalServiceBaseImpl {
 	 *
 	 * Never reference this class directly. Use <code>com.adjecti.timesheet.service.ProjectLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.adjecti.timesheet.service.ProjectLocalServiceUtil</code>.
 	 */
+	
+	public Project findByProjectId(long projectId) {
+		Project findByProjectId=null;
+		try {
+			 findByProjectId = projectPersistence.findByProjectId(projectId);
+		} catch (NoSuchProjectException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return findByProjectId;
+	}
 }
