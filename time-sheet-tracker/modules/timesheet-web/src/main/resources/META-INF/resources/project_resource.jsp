@@ -4,6 +4,8 @@
 <%@page import="java.util.*" %>
 
 <%@ include file="/init.jsp" %>
+<%@ page import="java.util.function.*" %>>
+<%@ page import="java.util.stream.Collectors;" %>
 <portlet:renderURL var="viewURL">
 
 <portlet:param name="mvcPath" value="/project_list.jsp"></portlet:param>
@@ -153,12 +155,28 @@ String projectid=request.getParameter("projectid");
    
      EmployeeLocalService employeelocalservice=(EmployeeLocalService)request.getAttribute("_employeeLocalService"); %>
     <%List<Employee>employees=employeelocalservice.getEmployees(0, employeelocalservice.getEmployeesCount()); 
-    for(Employee employee:employees){
-        
+   
+   List<ProjectResource>projectResources1= projectResourceLocalService.findByProjectId(projectId);
+   
+   /* List<Long> projectresource=new ArrayList<>();
+   
+   for(ProjectResource resource:projectResources1){
+	   projectresource.add(resource.getEmployeeId());
+   } */
+ 
+   Predicate<Employee> CheckEmployee=e->
+	           projectResources1.stream().noneMatch(p->p.getEmployeeId()==e.getEmployeeId()) ; 
+   
+   List<Employee> employeeList=employees.stream().filter(CheckEmployee).collect(Collectors.toList());
+
+    for(Employee employee:employeeList){
+     
     %>
    
     <aui:option value="<%=employee.getEmployeeId() %>"><%=employee.getFirstName()+"  "+employee.getLastName() %></aui:option>                       
-        <%} %>
+        <%
+      
+      }%>
         </aui:select>
 				</aui:col>
 				
