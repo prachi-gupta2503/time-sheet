@@ -4,12 +4,14 @@ import com.adjecti.timesheet.constants.TimesheetWebPortletKeys;
 import com.adjecti.timesheet.model.Project;
 import com.adjecti.timesheet.model.ProjectResource;
 import com.adjecti.timesheet.model.ResourceCategory;
+import com.adjecti.timesheet.model.ResourceTask;
 import com.adjecti.timesheet.model.Task;
 import com.adjecti.timesheet.model.TaskCategory;
 import com.adjecti.timesheet.service.EmployeeLocalService;
 import com.adjecti.timesheet.service.ProjectLocalService;
 import com.adjecti.timesheet.service.ProjectResourceLocalService;
 import com.adjecti.timesheet.service.ResourceCategoryLocalService;
+import com.adjecti.timesheet.service.ResourceTaskLocalService;
 import com.adjecti.timesheet.service.TaskCategoryLocalService;
 import com.adjecti.timesheet.service.TaskLocalService;
 import com.liferay.counter.kernel.service.CounterLocalServiceUtil;
@@ -20,6 +22,8 @@ import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.WebKeys;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
@@ -64,6 +68,9 @@ public class TimesheetWebPortlet extends MVCPortlet {
     
     @Reference
     private ProjectResourceLocalService _projectResourceLocalService;
+    
+    @Reference
+    private ResourceTaskLocalService _resourceTaskLocalService;
 	
 
 	public void addProject(ActionRequest request, ActionResponse response) throws PortalException, IOException {
@@ -93,9 +100,10 @@ public class TimesheetWebPortlet extends MVCPortlet {
 	public void addProjectResource(ActionRequest request, ActionResponse response) throws PortalException, IOException {
 
 		long projectId = ParamUtil.getLong(request, "projectId");
-		long taskId = ParamUtil.getLong(request, "taskId");
+		
 		long employeeId = ParamUtil.getLong(request, "employeeId");
 		
+		String project=String.valueOf(projectId);
         
 		ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
 
@@ -114,7 +122,9 @@ public class TimesheetWebPortlet extends MVCPortlet {
 		_projectResourceLocalService.updateProjectResource(projectResource);
 
         response.setRenderParameter(
-            "mvcPath", "/project_list.jsp");
+            "mvcPath", "/project_resource.jsp");
+        response.setRenderParameter(
+                "projectid", project);
 
 	}
 
@@ -174,7 +184,7 @@ public void addTask(ActionRequest request, ActionResponse response) throws Porta
 		long projectId = ParamUtil.getLong(request, "projectId");
 		long taskCategoryId = ParamUtil.getLong(request, "taskCategoryId");
 		
-		
+		String project=String.valueOf(projectId);
 		
 		  ThemeDisplay themeDisplay = (ThemeDisplay)
 		  request.getAttribute(WebKeys.THEME_DISPLAY);
@@ -193,11 +203,41 @@ public void addTask(ActionRequest request, ActionResponse response) throws Porta
 		  
 		  _taskLocalService.updateTask(task);
 		  response.setRenderParameter(
-		            "mvcPath", "/project_list.jsp");
+		            "mvcPath", "/task.jsp");
+		  response.setRenderParameter(
+		            "projectid", project);
             
 
 		 
 	}
+public void assignTaskToResource(ActionRequest request, ActionResponse response) throws PortalException, IOException {
+
+	long taskId = ParamUtil.getLong(request, "taskId");
+	long employeeId = ParamUtil.getLong(request, "employeeId");
+	SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyy-mm-dd");
+	Date toDate=ParamUtil.getDate(request, "toDate", dateFormat);
+	Date fromDate=ParamUtil.getDate(request, "fromDate", dateFormat);
+	int hour = ParamUtil.getInteger(request, "hour");
+	ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
+
+	ResourceTask resourceTask = _resourceTaskLocalService.createResourceTask(CounterLocalServiceUtil.increment(ResourceTask.class.getName()));
+	
+	resourceTask.setUserId(themeDisplay.getLayout().getUserId());
+	resourceTask.setGroupId(themeDisplay.getLayout().getGroupId());
+	resourceTask.setUserName(themeDisplay.getLayout().getUserName());
+	resourceTask.setHour(hour);
+	resourceTask.setToDate(toDate);
+	resourceTask.setFromDate(fromDate);
+	resourceTask.setTaskId(taskId);
+	resourceTask.setEmployeeId(employeeId);
+	
+	
+
+	_resourceTaskLocalService.updateResourceTask(resourceTask);
+
+    response.setRenderParameter(
+        "mvcPath", "/assign_task.jsp");
+}
 	@Override
 	public void render(RenderRequest request, RenderResponse response)
 	    throws IOException, PortletException {
@@ -209,6 +249,7 @@ public void addTask(ActionRequest request, ActionResponse response) throws Porta
 	    request.setAttribute("_taskLocalService", getTaskLocalService());
 	    request.setAttribute("_employeeLocalService", getEmployeeLocalService());
 	    request.setAttribute("_projectResourceLocalService",getProjectResourceLocalService());
+	    request.setAttribute("_resourceTaskLocalService",getResourceTaskLocalService());
 	    super.render(request, response);
 	    
 	}
@@ -231,4 +272,8 @@ public void addTask(ActionRequest request, ActionResponse response) throws Porta
 	public ProjectResourceLocalService getProjectResourceLocalService() {
 		return _projectResourceLocalService;
 	}
+	public ResourceTaskLocalService getResourceTaskLocalService() {
+		return _resourceTaskLocalService;
+	}
+	
 }

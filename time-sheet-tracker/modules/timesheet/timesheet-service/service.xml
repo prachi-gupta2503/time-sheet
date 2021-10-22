@@ -222,9 +222,10 @@
 
 		<!-- Finder methods -->
 
-		<finder name="TaskId" return-type="Collection">
+		<finder name="TaskId" return-type="Task">
 			<finder-column name="taskId" />
 		</finder>
+		
         <finder name="ProjectId" return-type="Collection">
 			<finder-column name="projectId" />
 		</finder>
@@ -340,7 +341,7 @@
 		<!-- References -->
 
 		</entity>
-	<entity local-service="true" name="resourceTask" remote-service="true" uuid="true">
+	<entity local-service="true" name="ResourceTask" remote-service="true" uuid="true">
 
 		<!-- PK fields -->
 

@@ -87,7 +87,7 @@
    
      <li href="#" class="nav-link">
    
-      <a href="${resourceUrl}" > <liferay-ui:icon image="team_icon" id="time" />Resource</a>
+      <a href="${resourceUrl}" > <liferay-ui:icon image="impersonate_user" id="time" />Resource</a>
       
     </li>
    

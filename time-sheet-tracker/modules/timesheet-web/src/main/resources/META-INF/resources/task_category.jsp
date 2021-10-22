@@ -26,18 +26,14 @@
 	margin-top:30px;
 	
 }
-.model-content{
-background-color: #e3f2fd;
-}
+
 
 #mapping-dialog{
-background-color: #e3f2fd;
+
   padding-left: 30%;
   
 }
-#span{
-background-color: #e3f2fd;
-}
+
 
 /* The Close Button */
 .close {

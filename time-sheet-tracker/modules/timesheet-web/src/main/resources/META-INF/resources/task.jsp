@@ -31,18 +31,14 @@
 	margin-top:30px;
 	
 }
-.model-content{
-background-color: #e3f2fd;
-}
+
 
 #mapping-dialog{
-background-color: #e3f2fd;
+
   padding-left: 30%;
   
 }
-#span{
-background-color: #e3f2fd;
-}
+
 
 /* The Close Button */
 .close {
@@ -208,13 +204,13 @@ String projectid=request.getParameter("projectid");
 			 <aui:input name="projectResourceId" type="hidden" />
 			 <aui:input name="taskId" type="hidden" />
 				<aui:row>
-				<aui:col width="50" id="taskname">
+				<aui:col width="80" id="taskname">
 					<aui:input name="taskName"  />
 					</aui:col>
 					</aui:row>
 					<aui:row>
 				
-				<aui:col width="50">
+				<aui:col width="80">
 					<aui:select label=" TaskCategory" id="taskcategory" name="taskCategoryId">
      <aui:option value="" selected="true" disabled= "true">Please Select an TaskCategory</aui:option>
      

@@ -31,6 +31,48 @@
   display:none;
  
   }
+  
+ 
+
+
+.add_mapping {
+	display: none; 
+	position: fixed;
+	z-index: 1; 
+	padding-top: 100px; 
+	left: 0;
+	top: 0;
+	width: 30%; 
+	height: 40%; 
+	margin-left:800px;
+	margin-top:30px;
+	
+}
+
+
+#mapping-dialog{
+  padding-left: 30%;
+  padding-bottom:10%;
+  
+}
+
+
+/* The Close Button */
+.close {
+	color: #aaaaaa;
+	float: right;
+	font-size: 28px;
+	font-weight: bold;
+}
+
+.close:hover, .close:focus {
+	color: #000;
+	text-decoration: none;
+	cursor: pointer;
+}
+
+
+
 </style>
 <div class="row">
 <div class="col-4">
@@ -78,8 +120,10 @@ String projectid=request.getParameter("projectid");
   </tbody>
 </table>
 <div >
-        <aui:button value="Add Resource" class="btn btn-primary" id="addresource"></aui:button>
+        <button value="Add Resource" class="btn btn-success" id="<portlet:namespace/>mappingBtn"><liferay-ui:icon image="add" />Resource </button>
        </div>
+</div>
+</div>
 
 
 
@@ -87,14 +131,22 @@ String projectid=request.getParameter("projectid");
 
 
  
-<div id="form" class="mt-5">
-<aui:form action="${addProjectResourceURL}" name="<portlet:namespace />fm" class="p-4">
-	<!-- <aui:fieldset-group markupView="lexicon">
-		<aui:fieldset label=""> -->
+
+
+
+<div id="myModal" class=" add_mapping">
+	
+	<div class="modal-content">
+		<div id="span">
+			<span class="close">&times;</span>
+		</div>
+		<div id="mapping-dialog" title="Add Mapping">
+			<aui:form action="${addProjectResourceURL}" name="<portlet:namespace />fm" class="p-4">
+	
 			<aui:row>
 			<aui:input type="hidden" value="<%=projectId %>" name="projectId" />
 			 <aui:input name="projectResourceId" type="hidden" />
-				<aui:col width="100">
+				<aui:col width="80">
 					<aui:select label="Employee " id="employee" name="employeeId">
      <aui:option value="" selected="true" disabled= "true">Please Select an Employee</aui:option>
      <%
@@ -111,74 +163,43 @@ String projectid=request.getParameter("projectid");
 				</aui:col>
 				
 			</aui:row>
-			
-		<!-- </aui:fieldset>
-	</aui:fieldset-group> -->
-	
-	<aui:button-row>
-		 <aui:button type="submit"></aui:button>
-        <aui:button type="cancel" onClick="${viewURL.toString()}"></aui:button>
-	</aui:button-row>
-</aui:form>
 
-<%-- <aui:form action="${addProjectResourceURL}" name="<portlet:namespace />fm">
-
-<aui:model-context bean="${entry}" model="${ProjectResource.class}" />
-
-    <aui:fieldset >
-    <aui:row>
-     <aui:col width="30">
-    <aui:input type="hidden" value="<%=projectId %>" name="projectId" />
-    
-        
- 
-       </aui:col>
-       
-         
-        
-         <aui:col width="30">
-    <aui:select label="Employee " id="employee" name="employeeId">
-     <aui:option value="" selected="true" disabled= "true">Please Select an Employee</aui:option>
-     <%
-   
-     EmployeeLocalService employeelocalservice=(EmployeeLocalService)request.getAttribute("_employeeLocalService"); %>
-    <%List<Employee>employees=employeelocalservice.getEmployees(0, employeelocalservice.getEmployeesCount()); 
-    for(Employee employee:employees){
-        
-    %>
-   
-    <aui:option value="<%=employee.getEmployeeId() %>"><%=employee.getFirstName()+"  "+employee.getLastName() %></aui:option>                       
-        <%} %>
-        </aui:select>
-        
- 
-       </aui:col>
-          
-        <aui:input name="projectResourceId" type="hidden" />
-        
-    </aui:fieldset>
-
-    <aui:button-row>
-
-        <aui:button type="submit"></aui:button>
-        <aui:button type="cancel" onClick="${viewURL.toString()}"></aui:button>
+        <aui:button-row>
+       <button type="submit" class="btn btn-success"><liferay-ui:icon image="saved_in_database" /> Submit</button>
+        <button type="button"class="btn btn-danger" onClick="${viewURL.toString()}" id="<portlet:namespace/>cancelBtn"><liferay-ui:icon image="close" />Close</button>
 
     </aui:button-row>
-</aui:form> --%>
+        </aui:form>
+		</div>
+	</div>
 </div>
 
-</div>
 
- </div>
- 
 <script>
-
-
-$("#<portlet:namespace/>addresource").click(function(){
-	 
+$(document).ready( function() {
+   	var modal = document.getElementById("myModal");
+	 var btn = document.getElementById("<portlet:namespace/>mappingBtn");
+	var cancelBtn = document.getElementById("<portlet:namespace/>cancelBtn");
+	var span = document.getElementsByClassName("close")[0]; 
+	btn.onclick = function() {
+		modal.style.display = "block";
+	}
+	span.onclick = function() {
+		modal.style.display = "none";
+	}
+	cancelBtn.onclick = function() {
+		modal.style.display = "none";
+	}
 	
-	$("#form").css("display","block");
-});
+	window.onclick = function(event) {
+		if (event.target == modal) {
+			modal.style.display = "none";
+		}
+	}
+	
+} );
 
-</script>
+</script>    
+
+
  

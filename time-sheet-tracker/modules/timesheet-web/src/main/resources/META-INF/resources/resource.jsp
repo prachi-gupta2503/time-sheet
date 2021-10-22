@@ -41,12 +41,17 @@ List<ProjectResource>projectResources= projectResourceLocalService.getProjectRes
    System.out.println("size"+employeeList.size());
    for(long empId:employeeList){
 	  employee=employeeLocalService.findByEmployeeId(empId);
-   
+   String employeeId=String.valueOf(employee.getEmployeeId());
 %>
     <tr>
       <td><%=i++ %></td>
       <td><%= employee.getFirstName()+"  "+employee.getLastName() %></td>
-      <td><a href="#">Assign Task</a></td>
+      <portlet:renderURL var="assignTaskUrl">
+
+<portlet:param name="mvcPath" value="/assign_task.jsp"></portlet:param>
+<portlet:param name="employeeId" value="<%=employeeId %>"></portlet:param>
+</portlet:renderURL>
+      <td><a href="${assignTaskUrl}" style="color:green">Assign Task</a></td>
       </tr>
   <%} %> 
 </tbody>
