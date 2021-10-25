@@ -98,6 +98,7 @@
  %>
    <tr>
     
+ <td style="display:none;"><%=resourceTask.getResourceTaskId() %></td>
  <td><%=task.getTaskName() %></td>
  <td><%=project.getName() %></td>
   <td><%=resourceTask.getFromDate().toString().substring(0, 10) %></td>
@@ -142,11 +143,11 @@
 					</aui:row>
 					<aui:row>
 				<aui:col width="50" >
-					<aui:input name="fromDate"  id="fromDate" type="date"  readOnly="true" />
+					<aui:input name="fromDate"  id="fromDate" type="text"  readOnly="true" />
 					</aui:col>
 					
 				<aui:col width="50" >
-					<aui:input name="toDate"  id="toDate" type="date"  readOnly="true" />
+					<aui:input name="toDate"  id="toDate" type="text"  readOnly="true" />
 					</aui:col>
 					</aui:row>
 					<aui:row>
@@ -188,27 +189,17 @@ $(document).ready( function() {
 	
 	jQuery(".mapping").click(function(event){
 		var  id=this.value;
-		Liferay.Service(
-				  '/timesheet.resourcetask/find-all-resource-task',
-				  {
-				    resourceTaskId: id
-				  },
-				  function(obj) {
-					  console.log(obj);
-					 
-					  for (var i=0; i < obj.length; i++) {
-						  document.getElementById("<portlet:namespace/>resourceTaskId").value = id;
-						  
-						  document.getElementById("<portlet:namespace/>taskName").value = obj[0];
-						  document.getElementById("<portlet:namespace/>project").value = obj[1];
-						  document.getElementById("<portlet:namespace/>fromDate").value = obj[2];
-						  document.getElementById("<portlet:namespace/>toDate").value = obj[3];
-						  document.getElementById("<portlet:namespace/>hour").value = obj[4];
-				    console.log(obj[i]);
-				  
-					  }
-				  }
-				);
+		
+		var currentRow=$(this).closest("tr"); 
+       
+        document.getElementById("<portlet:namespace/>resourceTaskId").value = currentRow.find("td:eq(0)").text();
+		  
+		  document.getElementById("<portlet:namespace/>taskName").value = currentRow.find("td:eq(1)").text();
+		  document.getElementById("<portlet:namespace/>project").value = currentRow.find("td:eq(2)").text();
+		  document.getElementById("<portlet:namespace/>fromDate").value = currentRow.find("td:eq(3)").text();
+		  document.getElementById("<portlet:namespace/>toDate").value =currentRow.find("td:eq(4)").text();
+		  document.getElementById("<portlet:namespace/>hour").value = currentRow.find("td:eq(5)").text();
+    
 		 
 	 var modal = document.getElementById("myModal");
 	 modal.style.display = "block";
