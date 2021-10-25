@@ -212,31 +212,51 @@ public void addTask(ActionRequest request, ActionResponse response) throws Porta
 	}
 public void assignTaskToResource(ActionRequest request, ActionResponse response) throws PortalException, IOException {
 
-	long taskId = ParamUtil.getLong(request, "taskId");
-	long employeeId = ParamUtil.getLong(request, "employeeId");
-	SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyy-mm-dd");
-	Date toDate=ParamUtil.getDate(request, "toDate", dateFormat);
-	Date fromDate=ParamUtil.getDate(request, "fromDate", dateFormat);
-	int hour = ParamUtil.getInteger(request, "hour");
-	ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
-
-	ResourceTask resourceTask = _resourceTaskLocalService.createResourceTask(CounterLocalServiceUtil.increment(ResourceTask.class.getName()));
+	long resourceTaskId = ParamUtil.getLong(request, "resourceTaskId");
+	System.out.println("resourceTaskId"+resourceTaskId);
 	
-	resourceTask.setUserId(themeDisplay.getLayout().getUserId());
-	resourceTask.setGroupId(themeDisplay.getLayout().getGroupId());
-	resourceTask.setUserName(themeDisplay.getLayout().getUserName());
-	resourceTask.setHour(hour);
-	resourceTask.setToDate(toDate);
-	resourceTask.setFromDate(fromDate);
-	resourceTask.setTaskId(taskId);
-	resourceTask.setEmployeeId(employeeId);
-	
-	
+	if(resourceTaskId>0) {
+		int workedHour = ParamUtil.getInteger(request, "workedHour");
+		String description = ParamUtil.getString(request, "description");
+		String status = ParamUtil.getString(request, "status");
+		ResourceTask resourceTask=getResourceTaskLocalService().getResourceTask(resourceTaskId);
+		resourceTask.setWorkedHour(workedHour);
+		resourceTask.setStatus(status);
+		resourceTask.setDescription(description);
+			 _resourceTaskLocalService.updateResourceTask(resourceTask); 
 
-	_resourceTaskLocalService.updateResourceTask(resourceTask);
-
-    response.setRenderParameter(
-        "mvcPath", "/assign_task.jsp");
+	    response.setRenderParameter(
+	        "mvcPath", "/resource_activity.jsp");
+	    response.setRenderParameter(
+		        "employeeId", "resourceTask.getEmployeeId()");
+	}
+	else {
+		
+			
+			  long taskId = ParamUtil.getLong(request, "taskId"); 
+			  long employeeId = ParamUtil.getLong(request, "employeeId"); 
+			  SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyy-mm-dd"); Date toDate=ParamUtil.getDate(request,"toDate", dateFormat);
+			  Date fromDate=ParamUtil.getDate(request, "fromDate",dateFormat); 
+			  int hour = ParamUtil.getInteger(request, "hour"); 
+			  ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
+			  
+			  ResourceTask resourceTask =
+			  _resourceTaskLocalService.createResourceTask(CounterLocalServiceUtil.
+			  increment(ResourceTask.class.getName()));
+			  
+			  resourceTask.setUserId(themeDisplay.getLayout().getUserId());
+			  resourceTask.setGroupId(themeDisplay.getLayout().getGroupId());
+			  resourceTask.setUserName(themeDisplay.getLayout().getUserName());
+			  resourceTask.setHour(hour); resourceTask.setToDate(toDate);
+			  resourceTask.setFromDate(fromDate); resourceTask.setTaskId(taskId);
+			  resourceTask.setEmployeeId(employeeId);
+			  
+			  
+			  _resourceTaskLocalService.updateResourceTask(resourceTask);
+			  
+			  response.setRenderParameter( "mvcPath", "/assign_task.jsp");
+			 
+}
 }
 	@Override
 	public void render(RenderRequest request, RenderResponse response)

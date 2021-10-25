@@ -4,7 +4,7 @@
 <%@page import="java.util.*" %>
 
 <%@ include file="/init.jsp" %>
-<%@ page import="java.util.function.*" %>>
+<%@ page import="java.util.function.*" %>
 <%@ page import="java.util.stream.Collectors;" %>
 <portlet:renderURL var="viewURL">
 
