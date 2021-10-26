@@ -2,7 +2,8 @@
 <%@page import="com.adjecti.timesheet.service.*"%>
 <%@page import="com.adjecti.timesheet.model.*" %>
 <%@page import="java.util.*" %>
-
+<%@ page import="java.util.function.*" %>>
+<%@ page import="java.util.stream.Collectors;" %>
 <%@ include file="/init.jsp" %>
 <div class="row">
 <div class="col-4">
@@ -25,22 +26,26 @@
    
     <%int i=1; %>
     <%
-    Set<Long>employeeList=new HashSet<Long>();
-    Employee employee=null;
+  //  Set<Long>employeeList=new HashSet<Long>();
+    //Employee employee=null;
    EmployeeLocalService employeeLocalService=(EmployeeLocalService)request.getAttribute("_employeeLocalService");
    // List<Employee>employees=employeeLocalService.getEmployees(0, employeeLocalService.getEmployeesCount());
     ProjectResourceLocalService projectResourceLocalService=(ProjectResourceLocalService)request.getAttribute("_projectResourceLocalService");
  //   ProjectLocalService projectLocalService=(ProjectLocalService)request.getAttribute("_projectLocalService");
    
 List<ProjectResource>projectResources= projectResourceLocalService.getProjectResources(0, projectResourceLocalService.getProjectResourcesCount());
-   for(ProjectResource projectResource:projectResources)
-   {
-	   System.out.println(projectResource.getEmployeeId());
-	   employeeList.add(projectResource.getEmployeeId());
-   }
-   System.out.println("size"+employeeList.size());
-   for(long empId:employeeList){
-	  employee=employeeLocalService.findByEmployeeId(empId);
+   
+   
+   List<Employee>emp=projectResources.stream()
+		     						.map(p->p.getEmployeeId())
+		     						.collect(Collectors.toSet())
+		     						.stream()
+		     						.map(employeeLocalService::findByEmployeeId)
+		     						.collect(Collectors.toList());
+  
+ 
+   for(Employee employee:emp){
+	
    String employeeId=String.valueOf(employee.getEmployeeId());
 %>
     <tr>
