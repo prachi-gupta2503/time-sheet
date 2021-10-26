@@ -1,3 +1,5 @@
+<%@page import="java.util.stream.Collector"%>
+<%@page import="java.util.stream.Collectors"%>
 <%@ taglib uri = "http://java.sun.com/jsp/jstl/core" prefix = "c" %>
 <%@page import="com.adjecti.timesheet.service.*"%>
 <%@page import="com.adjecti.timesheet.model.*" %>
@@ -80,20 +82,58 @@ String projectid=request.getParameter("projectid");
     <tr>
       <th scope="col">Task</th>
       <th scope="col">Type</th>
-      
+      <th scope="col">Assign Employee</th>
+      <th scope="col">Status</th>
     </tr>
   </thead>
   <tbody>
-  <%TaskLocalService taskLocalService=(TaskLocalService)request.getAttribute("_taskLocalService");
+  <%
+  TaskLocalService taskLocalService=(TaskLocalService)request.getAttribute("_taskLocalService");
+  EmployeeLocalService employeeLocalService=(EmployeeLocalService)request.getAttribute("_employeeLocalService");
+  ResourceTaskLocalService resourceTaskLocalService=(ResourceTaskLocalService)request.getAttribute("_resourceTaskLocalService");
   TaskCategoryLocalService taskCategoryLocalService=(TaskCategoryLocalService)request.getAttribute("_taskCategoryLocalService");
   List<Task>tasklist=taskLocalService.findByProjectId(projectId);
+  
+// tasklist.stream().map(e->resourceTaskLocalService.findByTaskId(e.getTaskId())).map(e->);
+List<ResourceTask>resourceTasks= tasklist.stream().map(task->resourceTaskLocalService.findByTaskId(task.getTaskId()))
+  .flatMap(resTask->resTask.stream()).collect(Collectors.toList());
+		           // .map(e->employeeLocalService.findByEmployeeId(e.getEmployeeId()))
+		           // .map(emp->emp.getFirstName())).collect(Collectors.toList());
+													//.map(resTask->employeeLocalService.findByEmployeeId(resTask.f))
+  //tasklist.stream().flatMap(e->stream.of(e)).collect(Collectors.toList());
+	//List<String> empName=resourceTasks.stream().map(res->employeeLocalService.findByEmployeeId(res.getEmployeeId())).map(emp->emp.getFirstName()).collect(Collectors.toList())	;											
+ // System.out.println(empName);
  for(Task task:tasklist){
 	TaskCategory taskCategory= taskCategoryLocalService.getTaskCategory(task.getTaskCategoryId());
+	//resourceTaskLocalService.find
+	
+	List<String> empName=resourceTaskLocalService.findByTaskId(task.getTaskId()).stream()
+	                        .map(res->employeeLocalService.findByEmployeeId(res.getEmployeeId()))
+	                        .map(emp->emp.getFirstName()).collect(Collectors.toList());	
+	
+	
+	 List<String>status=resourceTaskLocalService.findByTaskId(task.getTaskId()).stream().map(res->res.getStatus()).collect(Collectors.toList());
+	                                                        
+	
+	
  %>
    <tr>
     
  <td><%=task.getTaskName() %></td>
  <td><%=taskCategory.getType() %></td>
+  <%
+     if(!empName.isEmpty()){
+  %>
+  <td><%=empName %></td>
+  <%} %>
+  <td>
+  	<%
+  	if(!status.isEmpty()){
+  	for(int  i=0;i<status.size();i++){ %>
+  <%=empName.get(i)+" : "+status.get(i)%><br/>
+  <%} 
+  }%>
+  </td>
  <%} %>
     </tr>
    
