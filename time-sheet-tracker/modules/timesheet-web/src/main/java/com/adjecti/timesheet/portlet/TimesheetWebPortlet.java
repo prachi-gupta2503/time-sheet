@@ -1,6 +1,7 @@
 package com.adjecti.timesheet.portlet;
 
 import com.adjecti.timesheet.constants.TimesheetWebPortletKeys;
+import com.adjecti.timesheet.model.Employee;
 import com.adjecti.timesheet.model.Project;
 import com.adjecti.timesheet.model.ProjectResource;
 import com.adjecti.timesheet.model.ResourceCategory;
@@ -16,7 +17,10 @@ import com.adjecti.timesheet.service.TaskCategoryLocalService;
 import com.adjecti.timesheet.service.TaskLocalService;
 import com.liferay.counter.kernel.service.CounterLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.model.Role;
+import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCPortlet;
+import com.liferay.portal.kernel.service.RoleLocalServiceUtil;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.WebKeys;
@@ -24,6 +28,7 @@ import com.liferay.portal.kernel.util.WebKeys;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
@@ -71,8 +76,21 @@ public class TimesheetWebPortlet extends MVCPortlet {
     
     @Reference
     private ResourceTaskLocalService _resourceTaskLocalService;
-	
-
+                  
+    @Override
+	public void doView(RenderRequest renderRequest, RenderResponse renderResponse)
+			throws IOException, PortletException {
+		
+		User user = (User) renderRequest.getAttribute(WebKeys.USER);
+		
+		List<Role>role=RoleLocalServiceUtil.getUserRoles(user.getUserId());
+		Employee employee=_employeeLocalService.findByEmployeeUserId(user.getUserId());
+		renderRequest.setAttribute("employee", employee.getEmployeeId()); 
+		
+		renderRequest.setAttribute("role", role);    	
+		super.doView(renderRequest, renderResponse);
+	}
+    
 	public void addProject(ActionRequest request, ActionResponse response) throws PortalException, IOException {
 
 		String name = ParamUtil.getString(request, "name");
@@ -90,7 +108,6 @@ public class TimesheetWebPortlet extends MVCPortlet {
 		project.setName(name);
 		
 		
-
 		_projectLocalService.updateProject(project);
 
         response.setRenderParameter(
@@ -225,10 +242,10 @@ public void assignTaskToResource(ActionRequest request, ActionResponse response)
 		resourceTask.setDescription(description);
 			 _resourceTaskLocalService.updateResourceTask(resourceTask); 
 
+	    request.setAttribute("employee", resourceTask.getEmployeeId()); 
 	    response.setRenderParameter(
 	        "mvcPath", "/resource_activity.jsp");
-	    response.setRenderParameter(
-		        "employeeId", "resourceTask.getEmployeeId()");
+	    
 	}
 	else {
 		
@@ -262,7 +279,7 @@ public void assignTaskToResource(ActionRequest request, ActionResponse response)
 	public void render(RenderRequest request, RenderResponse response)
 	    throws IOException, PortletException {
 
-	    //set service bean
+	   
 	    request.setAttribute("_projectLocalService", getProjectLocalService());
 	    request.setAttribute("_taskCategoryLocalService", getTaskCategoryLocalService());
 	    request.setAttribute("_resourceCategoryLocalService", getResourceCategoryLocalService());

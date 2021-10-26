@@ -62,8 +62,9 @@
 <div class="col-10">
 
 <% 
-/* String employeeid=request.getParameter("employeeid"); */
-  long employeeId=3; /* Long.parseLong(employeeid); */
+System.out.println("resource activity");
+ long employeeId=(long)request.getAttribute("employee");
+ System.out.println(employeeId);
    EmployeeLocalService employeeLocalService=(EmployeeLocalService)request.getAttribute("_employeeLocalService");
  Employee employee= employeeLocalService.findByEmployeeId(employeeId); 
  
