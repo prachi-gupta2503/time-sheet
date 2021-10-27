@@ -63,9 +63,7 @@
 <liferay-portlet:renderURL var="resourceUrl">
         <portlet:param name="mvcPath" value="/resource.jsp" />
 </liferay-portlet:renderURL>
-<liferay-portlet:renderURL var="ActivityUrl">
-        <portlet:param name="mvcPath" value="/resource_activity.jsp" />
-</liferay-portlet:renderURL>
+
 
 <div class="side-navbar active-nav d-flex justify-content-between flex-wrap flex-column" id="sidebar">
   <ul class="nav flex-column text-white w-100">
@@ -93,11 +91,7 @@
       <a href="${resourceUrl}" > <liferay-ui:icon image="sitemap" id="time" />Resource</a>
       
     </li>
-    <li href="#" class="nav-link">
-   
-      <a href="${ActivityUrl}" > <liferay-ui:icon image="sitemap" id="time" />Resource Activity</a>
-      
-    </li>
+    
    
   </ul>
 </div>

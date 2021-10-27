@@ -78,13 +78,14 @@ System.out.println("resource activity");
  <table class="table table-striped">
   <thead>
     <tr>
+     
       <th scope="col">Task</th>
       <th scope="col">Project</th>
       <th scope="col">From Date</th>
       <th scope="col">To Date</th>
       <th scope="col">Hour</th>
-      <th scope="col"> </th>
-      
+      <th scope="col">Status </th>
+      <th scope="col" > </th>
     </tr>
   </thead>
   <tbody>
@@ -105,8 +106,15 @@ System.out.println("resource activity");
   <td><%=resourceTask.getFromDate().toString().substring(0, 10) %></td>
    <td><%=resourceTask.getToDate().toString().substring(0, 10) %></td>
     <td><%=resourceTask.getHour()+" hour" %></td>
+    <td><%=resourceTask.getStatus() %></td>
+    <%if(resourceTask.getStatus().equalsIgnoreCase("completed")){ %>
+     <td style="background-color:#e3f2fd"><%="Worked Hour: "+resourceTask.getWorkedHour()+" hour" %></td>
+     
+    <%}else { %>
+    
     <td><button type="button"  class="btn btn-success mapping" id="<%=resourceTask.getResourceTaskId() %>" value="<%=resourceTask.getResourceTaskId() %>"><liferay-ui:icon image="edit" /> Update</button> </td>
-     </tr>
+    <%} %>
+     
  <%} %>
    
    
@@ -151,6 +159,8 @@ System.out.println("resource activity");
 					<aui:input name="toDate"  id="toDate" type="text"  readOnly="true" />
 					</aui:col>
 					</aui:row>
+					
+					
 					<aui:row>
 				<aui:col width="50" >
 					<aui:input name="Hour"  id="hour" type="text"  readOnly="true" />
@@ -165,8 +175,14 @@ System.out.println("resource activity");
 					<aui:input name="description"  />
 					</aui:col>
 					
-					<aui:col width="50" >
-					<aui:input name="status"  />
+					<aui:col width="50">
+					<aui:select label=" Status" id="status" name="status">
+                    <aui:option value="" selected="true" disabled= "true">Please Select an Status</aui:option>
+					<aui:option value="In Process">In Process</aui:option>   
+					<aui:option value="Completed">Completed</aui:option>   
+					<aui:option value="Close Failed">Close Failed</aui:option>   
+					<aui:option value="Draft">Draft</aui:option>                       
+					</aui:select>
 					</aui:col>
 					</aui:row>
 				</aui:fieldset>
@@ -200,7 +216,13 @@ $(document).ready( function() {
 		  document.getElementById("<portlet:namespace/>fromDate").value = currentRow.find("td:eq(3)").text();
 		  document.getElementById("<portlet:namespace/>toDate").value =currentRow.find("td:eq(4)").text();
 		  document.getElementById("<portlet:namespace/>hour").value = currentRow.find("td:eq(5)").text();
-    
+		  
+		  
+	   /* let fromDate   =  currentRow.find("td:eq(3)").text();
+	   let toDate = currentRow.find("td:eq(4)").text();
+	 console.log(fromDate.substring(7, 13) );
+	 console.log(toDate.substring(7, 13) ); */
+	 
 		 
 	 var modal = document.getElementById("myModal");
 	 modal.style.display = "block";

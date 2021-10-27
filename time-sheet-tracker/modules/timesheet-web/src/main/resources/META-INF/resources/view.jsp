@@ -18,7 +18,7 @@
 <%@ include file="/init.jsp" %>
 
 <% 
-
+//request.isUserInRole(role);
 List<Role>roles=(List<Role>)request.getAttribute("role");
 System.out.println(roles);
 for(Role role:roles)

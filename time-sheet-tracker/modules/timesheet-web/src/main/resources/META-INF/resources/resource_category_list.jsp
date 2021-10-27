@@ -3,9 +3,7 @@
 <%@page import="com.adjecti.timesheet.model.*" %>
 <%@page import="java.util.*" %>
 <%@ include file="/resource_category.jsp"%>
-<liferay-portlet:renderURL var="resourcecategoryUrl">
-        <portlet:param name="mvcPath" value="/resource_category.jsp" />
-</liferay-portlet:renderURL>
+
 
 <div class="row">
 <div class="col-4">
