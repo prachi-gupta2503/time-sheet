@@ -1,8 +1,11 @@
+
+<%@page import="java.util.stream.Collectors"%>
+<%@page import="java.util.function.*"%>
 <%@ taglib uri = "http://java.sun.com/jsp/jstl/core" prefix = "c" %>
 <%@page import="com.adjecti.timesheet.service.*"%>
 <%@page import="com.adjecti.timesheet.model.*" %>
 <%@page import="java.util.*" %>
-
+<%@page import="java.util.stream.Stream;" %>
 <%@ include file="/init.jsp" %>
 <portlet:renderURL var="viewURL">
 <portlet:param name="mvcPath" value="/assign_task.jsp"></portlet:param>
@@ -70,17 +73,21 @@ String employeeid=request.getParameter("employeeId");
   TaskLocalService taskLocalService=(TaskLocalService)request.getAttribute("_taskLocalService");
   Employee employee=employeeLocalService.getEmployee(employeeId);
  List<ProjectResource> projectResources= projectResourceLocalService.findByEmployeeId(employeeId);
-List<String> projectName=new ArrayList<>();
- for(ProjectResource p:projectResources)
- {
-	 projectName.add(projectLocalService.findByProjectId(p.getProjectId()).getName());
- }
+
+ Stream<Project> projects =projectResources.stream()
+ .map(p->projectLocalService.findByProjectId(p.getProjectId()));
+ 
+   List<String>projectNames=projectResources.stream()
+		   .map(p->projectLocalService.findByProjectId(p.getProjectId()))
+				 .map(project->project.getName())
+				 .collect(Collectors.toList());
+ 
  %>
  
 <div class="myDiv">
  
      <h4><%=employee.getFirstName().toUpperCase()+" "+employee.getLastName().toUpperCase() %></h4>
-     <h4>Project:<%=projectName %></h4>
+     <h4>Project:<%=projectNames %></h4>
  </div>
  
  <table class="table table-striped">
@@ -146,16 +153,24 @@ List<String> projectName=new ArrayList<>();
      <aui:option value="" selected="true" disabled= "true">Please Select an Task</aui:option>
      
      
-    <%List<Task>tasks=taskLocalService.getTasks(0, taskLocalService.getTasksCount());
-    for(Task task:tasks){ 
-    	for(ProjectResource projectResource:projectResources){
-    	if(task.getProjectId()==projectResource.getProjectId()){
+    <%
+    Predicate<Task>predicate=t->
+    						resourceTasks.stream().noneMatch(r->r.getTaskId()==t.getTaskId());
+   
+   List<Task>taskOfList= projects.map(project->taskLocalService.findByProjectId(project.getProjectId()))
+		                         .flatMap(task->task.stream())
+         						 .filter(predicate).collect(Collectors.toList());
+            
+   
+    
+
+    for(Task task:taskOfList){ 
+  
     %>
    
     <aui:option value="<%=task.getTaskId() %>"><%=task.getTaskName() %></aui:option>                       
        <%
-    	}
-    	}
+    	
     	} %>
         </aui:select>
 				</aui:col>
