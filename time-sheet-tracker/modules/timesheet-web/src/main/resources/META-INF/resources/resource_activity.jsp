@@ -25,10 +25,11 @@
 	padding-top: 100px; 
 	left: 0;
 	top: 0;
-	width: 40%; 
-	height: 100%; 
-	margin-left:400px;
+	width: 80%; 
+	height: 80%; 
+	/*margin-left:400px;*/
 	margin-top:30px;
+	margin-left:10%
 	
 }
 
@@ -55,6 +56,10 @@
 	cursor: pointer;
 }
 
+#dailyTask{
+
+   display:none;
+}
 
 </style>
 <div class="row">
@@ -62,9 +67,9 @@
 <div class="col-10">
 
 <% 
-System.out.println("resource activity");
+
  long employeeId=(long)request.getAttribute("employee");
- System.out.println(employeeId);
+ 
    EmployeeLocalService employeeLocalService=(EmployeeLocalService)request.getAttribute("_employeeLocalService");
  Employee employee= employeeLocalService.findByEmployeeId(employeeId); 
  
@@ -92,9 +97,11 @@ System.out.println("resource activity");
   <%TaskLocalService taskLocalService=(TaskLocalService)request.getAttribute("_taskLocalService");
   ProjectLocalService projectLocalService=(ProjectLocalService)request.getAttribute("_projectLocalService");
   ResourceTaskLocalService  resourceTaskLocalService =(ResourceTaskLocalService)request.getAttribute("_resourceTaskLocalService");
-  
+  ResourceTimeSheetLocalService  resourceTimeSheetLocalService =(ResourceTimeSheetLocalService)request.getAttribute("_resourceTimeSheetLocalService");
+ 
   List<ResourceTask>resourceTasks= resourceTaskLocalService.findTaskByEmployeeId(employeeId);
   for(ResourceTask resourceTask:resourceTasks){
+	
 	Task task=  taskLocalService.findByTaskId(resourceTask.getTaskId());
 	 Project project=projectLocalService.findByProjectId(task.getProjectId());
  %>
@@ -103,8 +110,8 @@ System.out.println("resource activity");
  <td style="display:none;"><%=resourceTask.getResourceTaskId() %></td>
  <td><%=task.getTaskName() %></td>
  <td><%=project.getName() %></td>
-  <td><%=resourceTask.getFromDate().toString().substring(0, 10) %></td>
-   <td><%=resourceTask.getToDate().toString().substring(0, 10) %></td>
+  <td><%=resourceTask.getFromDate()%></td>
+   <td><%=resourceTask.getToDate() %></td>
     <td><%=resourceTask.getHour()+" hour" %></td>
     <td><%=resourceTask.getStatus() %></td>
     <%if(resourceTask.getStatus().equalsIgnoreCase("completed")){ %>
@@ -114,7 +121,21 @@ System.out.println("resource activity");
     
     <td><button type="button"  class="btn btn-success mapping" id="<%=resourceTask.getResourceTaskId() %>" value="<%=resourceTask.getResourceTaskId() %>"><liferay-ui:icon image="edit" /> Update</button> </td>
     <%} %>
+     </tr>
      
+   <%--   
+     <%for(ResourceTimeSheet resourceTimeSheet:resourceTimeSheets){ %>
+     <tr>
+     <td style="background-color:#e3f2fd"><%="Date : "+resourceTimeSheet.getDate().toString().substring(0, 10) %></td>
+     <td style="background-color:#e3f2fd"><%="Hour : "+resourceTimeSheet.getHour()+" hour" %></td>
+     <td style="background-color:#e3f2fd"></td>
+     <td style="background-color:#e3f2fd"></td>
+     <td style="background-color:#e3f2fd"></td>
+     <td style="background-color:#e3f2fd"></td>
+     <td style="background-color:#e3f2fd"></td>
+     
+     </tr>
+     <%} %> --%>
  <%} %>
    
    
@@ -130,7 +151,7 @@ System.out.println("resource activity");
 </div> 
 
 
-<div id="myModal" class=" add_mapping">
+<div id="myModal" class="add_mapping">
 	
 	<div class="modal-content">
 		<div id="span">
@@ -138,10 +159,11 @@ System.out.println("resource activity");
 		</div>
 		<div id="mapping-dialog" title="Add Mapping">
 			<aui:form action="${addProjectResourceUrl}" name="<portlet:namespace />fm">
-<aui:fieldset >
+            <aui:fieldset >
 			 <aui:input type="hidden"  name="resourceTaskId" id="resourceTaskId" />
 			
 				<aui:row>
+				
 				<aui:col width="50" >
 					<aui:input name="Task" id="taskName" type="text"  readOnly="true"/>
 					</aui:col>
@@ -150,40 +172,17 @@ System.out.println("resource activity");
 					<aui:input name="Project" id="project" type="text"  readOnly="true" />
 					</aui:col>
 					</aui:row>
-					<aui:row>
-				<aui:col width="50" >
-					<aui:input name="fromDate"  id="fromDate" type="text"  readOnly="true" />
-					</aui:col>
-					
-				<aui:col width="50" >
-					<aui:input name="toDate"  id="toDate" type="text"  readOnly="true" />
-					</aui:col>
-					</aui:row>
 					
 					
-					<aui:row>
-				<aui:col width="50" >
-					<aui:input name="Hour"  id="hour" type="text"  readOnly="true" />
-					</aui:col>
-					
-					<aui:col width="50" >
-					<aui:input name="workedHour"  />
-					</aui:col>
-					</aui:row>
+					<div id="dates">
+					</div>
+				
 					<aui:row>
 					<aui:col width="50" >
-					<aui:input name="description"  />
+					<aui:input name="description" type="textarea" rows="4" cols="50" />
 					</aui:col>
 					
-					<aui:col width="50">
-					<aui:select label=" Status" id="status" name="status">
-                    <aui:option value="" selected="true" disabled= "true">Please Select an Status</aui:option>
-					<aui:option value="In Process">In Process</aui:option>   
-					<aui:option value="Completed">Completed</aui:option>   
-					<aui:option value="Close Failed">Close Failed</aui:option>   
-					<aui:option value="Draft">Draft</aui:option>                       
-					</aui:select>
-					</aui:col>
+				
 					</aui:row>
 				</aui:fieldset>
 	<aui:button-row>
@@ -204,25 +203,52 @@ System.out.println("resource activity");
 
 $(document).ready( function() {
 	
+
 	jQuery(".mapping").click(function(event){
 		var  id=this.value;
 		
 		var currentRow=$(this).closest("tr"); 
        
-        document.getElementById("<portlet:namespace/>resourceTaskId").value = currentRow.find("td:eq(0)").text();
+		 document.getElementById("<portlet:namespace/>resourceTaskId").value = currentRow.find("td:eq(0)").text();
 		  
 		  document.getElementById("<portlet:namespace/>taskName").value = currentRow.find("td:eq(1)").text();
 		  document.getElementById("<portlet:namespace/>project").value = currentRow.find("td:eq(2)").text();
-		  document.getElementById("<portlet:namespace/>fromDate").value = currentRow.find("td:eq(3)").text();
-		  document.getElementById("<portlet:namespace/>toDate").value =currentRow.find("td:eq(4)").text();
-		  document.getElementById("<portlet:namespace/>hour").value = currentRow.find("td:eq(5)").text();
+		
+		
 		  
-		  
-	   /* let fromDate   =  currentRow.find("td:eq(3)").text();
-	   let toDate = currentRow.find("td:eq(4)").text();
-	 console.log(fromDate.substring(7, 13) );
-	 console.log(toDate.substring(7, 13) ); */
-	 
+		const date1 = new Date(currentRow.find("td:eq(3)").text());
+		console.log("date "+date1);
+		const date2 = new Date(currentRow.find("td:eq(4)").text());
+		const diffTime = Math.abs(date2 - date1);
+		const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)); 
+		var v = [];
+		$("#dates").empty();
+		//var date3=new Date(date1);
+		var startDate = new Date(date1);
+		console.log("startDate : "+startDate);
+		for(var i=0;i<=diffDays;i++)
+		{
+			 var day = ("0" + startDate.getDate()).slice(-2);
+			 var month = ("0" + (startDate.getMonth() + 1)).slice(-2);
+			var today = startDate.getFullYear() + "-" + (month) + "-" + (day);			
+			var row = $('<div/>').attr({class:'row mb-1'}).appendTo('#dates');
+			var col1 = $('<div/>').attr({class:'col-md-4'}).appendTo(row);
+			var col2 = $('<div/>').attr({class:'col-md-4'}).appendTo(row);
+			var col3 = $('<div/>').attr({class:'col-md-4'}).appendTo(row);
+			 var date = $('<input/>').attr({type:'date',class:"form-control"}).appendTo(col1);
+			 date.val(today);
+			 var text = $('<input/>').attr({type:'text',class:"form-control",placeholder:" Enter workedHour"}).appendTo(col2);
+			 var status = $('<input/>').attr({type:'text',class:"form-control",placeholder:" Enter status"}).appendTo(col3);
+			 //$("#dates").empty();
+			var day = 60 * 60 * 24 * 1000;
+
+           var endDate = new Date(startDate.getTime() + day);
+           startDate = endDate;
+           console.log("endDate : "+endDate);
+		    //date3=date3.setDate(date3.getDate() + 1)
+		}
+		console.log("Printing the data array : "+v);
+	    //$("#dates").append(v);
 		 
 	 var modal = document.getElementById("myModal");
 	 modal.style.display = "block";
@@ -248,6 +274,8 @@ $(document).ready( function() {
 	
 	  
 } );
+
+
 
 </script>    
 

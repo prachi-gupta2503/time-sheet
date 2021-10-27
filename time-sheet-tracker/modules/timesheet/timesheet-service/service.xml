@@ -165,7 +165,7 @@
 		<column name="email" type="String" />
 		<column name="mobileNo" type="String" />
 		<column name="resourceCategoryId" type="long" />
-	
+	    <column name="empUserId" type="long" />
 
 		<!-- Order -->
 
@@ -177,6 +177,9 @@
 
 		<finder name="EmployeeId" return-type="Employee">
 			<finder-column name="employeeId" />
+		</finder>
+		<finder name="EmployeeUserId" return-type="Employee">
+			<finder-column name="empUserId" />
 		</finder>
 
 		<!-- References -->
@@ -366,7 +369,9 @@
 	     <column name="fromDate" type="Date" />
 	     <column name="toDate" type="Date" />
 		 <column name="hour" type="int" />
-	    
+	     <column name="workedHour" type="int" />
+	     <column name="description" type="String" />
+	     <column name="status" type="String" />
 		<!-- Order -->
 
 		<order by="asc">
@@ -380,11 +385,60 @@
 			<finder-column name="employeeId" />
 		</finder>
 		
+			<finder name="TaskId" return-type="Collection">
+			<finder-column name="taskId" />
+		</finder>
 		
 		<!-- References -->
 
 		<reference entity="AssetEntry" package-path="com.liferay.portlet.asset" />
 		<reference entity="AssetTag" package-path="com.liferay.portlet.asset" />
 	</entity>
+	<entity local-service="true" name="ResourceTimeSheet" remote-service="true" uuid="true">
+
+		<!-- PK fields -->
+
+		<column name="resourceTimeSheetId" primary="true" type="long" />
+
+		<!-- Group instance -->
+
+		<column name="groupId" type="long" />
+
+		<!-- Audit fields -->
+
+		<column name="companyId" type="long" />
+		<column name="userId" type="long" />
+		<column name="userName" type="String" />
+		<column name="createDate" type="Date" />
+		<column name="modifiedDate" type="Date" />
+
+		<!-- Other fields -->
+
+		 <column name="resourceTaskId" type="long" />
+	     <column name="date" type="Date" />
+		 <column name="hour" type="int" />
+		  <column name="status" type="String" />
+	     
+		<!-- Order -->
+
+		<order by="asc">
+			<order-column name="resourceTimeSheetId" />
+		</order>
+
+		<!-- Finder methods -->
+
+		
+		<finder name="ResourceTaskId" return-type="Collection">
+			<finder-column name="resourceTaskId" />
+		</finder>
+		
+			
+		
+		<!-- References -->
+
+		<reference entity="AssetEntry" package-path="com.liferay.portlet.asset" />
+		<reference entity="AssetTag" package-path="com.liferay.portlet.asset" />
+	</entity>
+	
 	
 </service-builder>
