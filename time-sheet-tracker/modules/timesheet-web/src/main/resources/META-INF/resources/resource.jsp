@@ -23,7 +23,7 @@
     </tr>
   </thead>
   <tbody>
-   <p>Welcome to java</p>
+   <p>Welcome  to liferay</p>
     <%int i=1; %>
     <%
   //  Set<Long>employeeList=new HashSet<Long>();
