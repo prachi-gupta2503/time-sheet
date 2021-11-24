@@ -53,7 +53,8 @@
 
 
 </style>
-
+<h1>hello to all</h1>
+<h1>hello to all</h1>
 <div id="myModal" class=" add_mapping">
 	
 	<div class="modal-content">
@@ -81,7 +82,7 @@
 
     <aui:button-row>
 
-
+            
        <button type="submit" class="btn btn-success"><liferay-ui:icon image="saved_in_database" /> Submit</button>
         <button type="button"class="btn btn-danger" onClick="${viewURL.toString()}" id="<portlet:namespace/>cancelBtn"><liferay-ui:icon image="close" />Close</button>
 
